@@ -1,7 +1,7 @@
 //
 // #set text(font: "Arial")//white)
 #set enum(tight: false)
-#set text(1.2em, hyphenate: false)
+#set text(1.2em, hyphenate: false, region: "uk")
 #set par(justify: true)
 
 #set page(
@@ -122,7 +122,7 @@ $
 
 == Two Dimensional Elastic Collision
 
-For two non-spinning bodies in two dimensions, to solve for the final velocities, we can resolve the velocities into components along the line of impact (#nh) and tangent to the bodies at the point of contact (#th). to it. Since the collision only imparts force along the line of impact, the tangential velocities don't change.
+For two non-spinning bodies in two dimensions, to solve for the final velocities, we can resolve the velocities into components along the line of impact (#nh) and tangent to the bodies at the point of contact (#th). Since the collision only imparts force along the line of impact, the tangential velocities don't change.
 
 #let fig1 = cetz.canvas({
   import cetz.draw: *
@@ -239,12 +239,12 @@ arrow(v'_1) &= lr(((m_1-m_2)/(m_1 + m_2)med v_(1n) + (2m_2)/(m_1 + m_2) med v_(2
 
 $
 
-This is the value of $arrow(v'_1)$ in terms of components of initial velocities, and unit vectors along the line of impact and tangent to it.  This can be simplified to a vector expression, by subtracting the initial velocity vector $arrow(v_1) = v_(1n) nh + v_(1t) th$ from $arrow(v'_1)$.
+This is the value of $arrow(v'_1)$ in terms of components of initial velocities, and unit vectors along the line of impact and tangent to it.  This can be converted into a vector expression, by subtracting the initial velocity vector $arrow(v_1) = v_(1n) nh + v_(1t) th$ from $arrow(v'_1)$.
 
 Subtracting $arrow(v_1)$ from $arrow(v'_1)$,
 
 $
-arrow(v'_1) - arrow(v_1) &= (lr(((m_1-m_2)/(m_1 + m_2)med v_(1n) + (2m_2)/(m_1 + m_2) med v_(2n))) nh + cancel(v_(1t) th)) - (v_(1n) nh + cancel(v_(1t) th))\
+arrow(v'_1) - arrow(v_1) &= (lr(((m_1-m_2)/(m_1 + m_2)med v_(1n) + (2m_2)/(m_1 + m_2) med v_(2n))) nh + med cancel(v_(1t) th)) - (v_(1n) nh + med cancel(v_(1t) th))\
 &= ((m_1-m_2)/(m_1 + m_2)med v_(1n) + (2m_2)/(m_1 + m_2) med v_(2n) - v_(1n)) nh\
 &= ((-2m_2)/(m_1 + m_2)med v_(1n) + (2m_2)/(m_1 + m_2) med v_(2n)) nh\
 &= (2m_2)/(m_1 + m_2)med (v_(2n) - v_(1n)) nh\
@@ -264,7 +264,7 @@ nh = (arrow(x_2) - arrow(x_1))/(|arrow(x_2) - arrow(x_1)|)
 $
 #pagebreak(weak: true)
 By substituting all values, we get a vector expression for 
-$arrow(v'_1)$. The expression of $arrow(v'_2)$ can be symetrically obtained.
+$arrow(v'_1)$. The expression of $arrow(v'_2)$ can be symmetrically obtained.
 $
 #block($
 display(arrow(v'_1) = arrow(v_1) + (2 m_2) / (m_1 + m_2) ((arrow(v_2) - arrow(v_1)) dot (arrow(x_2) - arrow(x_1)))/(|arrow(x_2) - arrow(x_1)|^2) (arrow(x_2) - arrow(x_1)))$, stroke: black, inset: 5mm
