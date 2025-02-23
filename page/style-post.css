@@ -1,0 +1,207 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Figtree", sans-serif;
+  background-color: #f9f6f9;
+  color: #100a10;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+main {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+  flex: 1;
+}
+
+h1 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+h2 {
+  font-size: 1.5rem;
+  margin: 0.5rem 0;
+}
+h3 {
+  margin: 0.5rem 0;
+}
+
+p {
+  margin-bottom: 1rem;
+}
+
+ol {
+  & li {
+    /* indent */
+    margin-left: 1.5rem;
+  }
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+footer {
+  background-color: #dedcde;
+  padding: 1rem;
+  width: 100%;
+
+  & .contain {
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 800px;
+  }
+
+  & a {
+    color: #545454;
+  }
+
+  & .right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+}
+
+pre {
+  font-family: "Azeret Mono", monospace;
+  font-weight: 600;
+  font-size: 1.2rem;
+}
+
+.frame-block {
+  display: flex;
+  justify-content: center;
+  margin: 1rem 0;
+}
+
+.declare {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  display: flex;
+
+  justify-content: space-between;
+
+  & a {
+    color: #545454;
+  }
+
+  & a:hover {
+    text-decoration: underline;
+  }
+}
+
+.date {
+  font-size: 1rem;
+  color: #545454;
+  margin-bottom: 1rem;
+}
+
+.dark {
+  visibility: hidden;
+  position: absolute;
+  top: 0;
+}
+
+.light {
+  visibility: visible;
+  position: static;
+}
+/* Hide default checkbox */
+.theme-switch {
+  position: absolute;
+  opacity: 0;
+}
+
+/* Custom toggle switch */
+.theme-switch-label {
+  display: inline-block;
+  width: 50px;
+  height: 26px;
+  background: #ccc;
+  border-radius: 50px;
+  position: relative;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+/* Switch knob */
+.theme-switch-label::after {
+  content: "☀️";
+  font-size: 11pt;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  background: white;
+  border-radius: 50%;
+  top: 2px;
+  left: 2px;
+  transition: transform 0.3s;
+}
+
+/* When checked (dark mode) */
+.theme-switch:checked + .theme-switch-label {
+  background: #222;
+}
+
+.theme-switch:checked + .theme-switch-label::after {
+  transform: translateX(24px);
+  content: "🌙";
+}
+
+[data-theme="dark"] {
+  & body {
+    background-color: #090609;
+    color: #f5eff5;
+  }
+
+  & .post {
+    background-color: #1e1e1e;
+    color: #f9f6f9;
+  }
+
+  & h2,
+  & h3 {
+    color: #48b781;
+  }
+
+  & footer {
+    background-color: #1e1e1e;
+
+    & a {
+      color: #f9f6f9;
+    }
+  }
+
+  & .light {
+    visibility: hidden;
+    position: absolute;
+    top: 0;
+  }
+
+  & .dark {
+    visibility: visible;
+    position: static;
+  }
+
+  & .declare a {
+    color: #ababab;
+  }
+
+  & .date {
+    color: #ababab;
+  }
+}

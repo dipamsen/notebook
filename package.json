@@ -1,0 +1,12 @@
+{
+  "name": "notebook",
+  "version": "1.0.0",
+  "description": "stuff about programming, math and more",
+  "type": "module",
+  "scripts": {
+    "compile": "node scripts/compile.js"
+  },
+  "keywords": [],
+  "author": "Dipam Sen",
+  "license": "MIT"
+}

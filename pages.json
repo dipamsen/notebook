@@ -1,0 +1,16 @@
+[
+  {
+    "title": "100 Boxes",
+    "description": "Overcomplicating simple probability results by using conditional probabilities and the total probability theorem.",
+    "path": "100boxes",
+    "date": "2024-02-19",
+    "pdf": false
+  },
+  {
+    "title": "Elastic Collisions",
+    "description": "Solutions to one and two dimensional elastic collisions of spheres.",
+    "path": "collisions",
+    "date": "2024-05-31",
+    "pdf": true
+  }
+]

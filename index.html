@@ -4,28 +4,67 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dipam's Notebook</title>
-    <link rel="stylesheet" href="https://unpkg.com/chota@latest" />
-
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Azeret+Mono:ital,wght@0,100..900;1,100..900&family=Figtree:ital,wght@0,300..900;1,300..900&family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap"
+      rel="stylesheet"
+    />
   </head>
-  <body class="dark">
-    <section class="container">
+  <body>
+    <main>
       <h1>Dipam's Notebook</h1>
+      <p>stuff about programming, math and more</p>
 
-      <div class="card">
-        <h3><a href="./collisions.pdf">Elastic Collisions</a></h3>
-        <p>
-          Solutions to one and two dimensional elastic collisions of spheres.
-        </p>
+      <div class="posts">
+        <div class="post">
+          <div class="details">
+            <h2>
+              <a href="page/collisions.html"> Elastic Collisions </a>
+              <a href="page/collisions.pdf" class="pdf">
+                <img src="assets/pdf.svg" alt="pdf" width="20" />
+              </a>
+            </h2>
+            <div class="date">May 31, 2024</div>
+          </div>
+          <p>
+            Solutions to one and two dimensional elastic collisions of spheres.
+          </p>
+        </div>
+        <div class="post">
+          <div class="details">
+            <h2>
+              <a href="page/100boxes.html"> 100 Boxes </a>
+            </h2>
+            <div class="date">February 19, 2024</div>
+          </div>
+          <p>
+            Overcomplicating simple probability results by using conditional
+            probabilities and the total probability theorem.
+          </p>
+        </div>
       </div>
+    </main>
 
-      <div class="card">
-        <h3><a href="./100boxes/">100 Boxes</a></h3>
-        <p>
-          Overcomplicating simple probability results by using conditional
-          probabilities and the total probability theorem.
-        </p>
+    <footer>
+      <div class="contain">
+        <pre>@dipamsen</pre>
+        <a href="https://github.com/dipamsen">
+          <img
+            src="assets/github-mark.svg"
+            alt="github"
+            width="30"
+            class="light"
+          />
+          <img
+            src="assets/github-mark-white.svg"
+            alt="github"
+            width="30"
+            class="dark"
+          />
+        </a>
       </div>
-    </section>
+    </footer>
   </body>
 </html>
