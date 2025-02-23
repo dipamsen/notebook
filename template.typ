@@ -125,7 +125,7 @@
                 "a",
                 html.elem(
                   "img",
-                  attrs: ("src": "/assets/github-mark.svg", "alt": "github", "width": "30", "class": "light"),
+                  attrs: ("src": "../assets/github-mark.svg", "alt": "github", "width": "30", "class": "light"),
                 ),
                 attrs: ("href": "https://github.com/dipamsen"),
               )
@@ -133,7 +133,7 @@
                   "a",
                   html.elem(
                     "img",
-                    attrs: ("src": "/assets/github-mark-white.svg", "alt": "github", "width": "30", "class": "dark"),
+                    attrs: ("src": "../assets/github-mark-white.svg", "alt": "github", "width": "30", "class": "dark"),
                   ),
                   attrs: ("href": "https://github.com/dipamsen"),
                 ),
