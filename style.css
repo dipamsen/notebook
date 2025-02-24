@@ -88,22 +88,88 @@ pre {
   color: #545454;
 }
 
-@media (prefers-color-scheme: dark) {
-  body {
+.icon {
+  width: 1em;
+  height: 1em;
+  vertical-align: -0.125em;
+  color: inherit;
+}
+
+.pdf {
+  margin-left: 1em;
+}
+
+/* Hide default checkbox */
+.theme-switch {
+  position: absolute;
+  opacity: 0;
+}
+
+/* Custom toggle switch */
+.theme-switch-label {
+  display: inline-block;
+  width: 50px;
+  height: 26px;
+  background: #ccc;
+  border-radius: 50px;
+  position: relative;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+/* Switch knob */
+.theme-switch-label::after {
+  content: "☀️";
+  font-size: 11pt;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  background: white;
+  border-radius: 50%;
+  top: 2px;
+  left: 2px;
+  transition: transform 0.3s;
+}
+
+/* When checked (dark mode) */
+.theme-switch:checked + .theme-switch-label {
+  background: #222;
+}
+
+.theme-switch:checked + .theme-switch-label::after {
+  transform: translateX(24px);
+  content: "🌙";
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+}
+
+footer a.typst {
+  color: #14aac0;
+  font-weight: 700;
+}
+
+[data-theme="dark"] {
+  & body {
     background-color: #090609;
     color: #f5eff5;
   }
 
-  .post {
+  & .post {
     background-color: #1e1e1e;
     color: #f9f6f9;
   }
 
-  a {
+  & a {
     color: #14854f;
   }
 
-  footer {
+  & footer {
     background-color: #1e1e1e;
 
     & a {
@@ -111,15 +177,20 @@ pre {
     }
   }
 
-  .dark {
+  & footer a.typst {
+    color: #14aac0;
+    font-weight: 700;
+  }
+
+  & .dark {
     display: block;
   }
 
-  .light {
+  & .light {
     display: none;
   }
 
-  .declare {
+  & .declare {
     color: #ababab;
   }
 }

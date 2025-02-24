@@ -8,8 +8,8 @@ for (const page of pages) {
   const htmlPath = `./page/${page.path}.html`;
   const pdfPath = `./page/${page.path}.pdf`;
 
-  const htmlCmd = `typst compile ${srcPath} --root . --format html --features html --input fmt=html ${htmlPath}`;
-  const pdfCmd = `typst compile ${srcPath} --root . --format pdf --features html --input fmt=pdf ${pdfPath}`;
+  const htmlCmd = `typst compile ${srcPath} --root . --format html --features html --font-path="./assets/fonts" --input fmt=html ${htmlPath}`;
+  const pdfCmd = `typst compile ${srcPath} --root . --format pdf --features html --font-path="./assets/fonts" --input fmt=pdf ${pdfPath}`;
 
   execSync(htmlCmd);
 

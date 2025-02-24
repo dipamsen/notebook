@@ -70,7 +70,9 @@
 
 #let make-title(body, date) = context {
   if target() == "paged" {
-    align(center, text(body, size: 1.8em, weight: 800))
+    block(text(body, size: 2.2em, weight: 700))
+    block(text(date.display("[month repr:long] [day], [year]"), size: 1em))
+    v(1em)
   } else {
     html.elem("h1", body)
     html.elem("div", attrs: ("class": "date"), date.display("[month repr:long] [day], [year]"))
@@ -152,10 +154,18 @@
   set text(1.2em, hyphenate: false, region: "uk")
   set par(justify: true)
 
+  set text(font: "Figtree")
+
   set page(
     footer: context [
       #set text(1.2em)
       #h(1fr)#counter(page).get().first()#h(1fr)
+    ],
+    header: context [
+      #set text(luma(100))
+      #link("https://dipamsen.github.io/notebook")[Dipam's Notebook]
+      #h(1fr)
+      #title
     ],
   ) if output-format == "pdf"
 

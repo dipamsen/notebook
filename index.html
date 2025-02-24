@@ -11,40 +11,114 @@
       href="https://fonts.googleapis.com/css2?family=Azeret+Mono:ital,wght@0,100..900;1,100..900&family=Figtree:ital,wght@0,300..900;1,300..900&family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap"
       rel="stylesheet"
     />
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const lskey = "dsnb-theme";
+        const theme = localStorage.getItem(lskey);
+        if (theme) {
+          document.body.parentElement.setAttribute("data-theme", theme);
+        } else {
+          document.body.parentElement.setAttribute("data-theme", "dark");
+        }
+        const themeSwitch = document.getElementById("theme-switch");
+        themeSwitch.checked =
+          document.body.parentElement.getAttribute("data-theme") === "dark";
+
+        populatePosts();
+      });
+
+      function toggleTheme() {
+        let theme = document.body.parentElement.getAttribute("data-theme");
+        if (theme === "dark") {
+          document.body.parentElement.setAttribute("data-theme", "light");
+        } else {
+          document.body.parentElement.setAttribute("data-theme", "dark");
+        }
+        localStorage.setItem(
+          "dsnb-theme",
+          document.body.parentElement.getAttribute("data-theme")
+        );
+      }
+
+      const pdfSvg = `<svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="icon"
+        viewBox="0 0 512 512"
+      >
+        <path
+          fill="currentColor"
+          d="M0 64C0 28.7 28.7 0 64 0L224 0l0 128c0 17.7 14.3 32 32 32l128 0 0 144-208 0c-35.3 0-64 28.7-64 64l0 144-48 0c-35.3 0-64-28.7-64-64L0 64zm384 64l-128 0L256 0 384 128zM176 352l32 0c30.9 0 56 25.1 56 56s-25.1 56-56 56l-16 0 0 32c0 8.8-7.2 16-16 16s-16-7.2-16-16l0-48 0-80c0-8.8 7.2-16 16-16zm32 80c13.3 0 24-10.7 24-24s-10.7-24-24-24l-16 0 0 48 16 0zm96-80l32 0c26.5 0 48 21.5 48 48l0 64c0 26.5-21.5 48-48 48l-32 0c-8.8 0-16-7.2-16-16l0-128c0-8.8 7.2-16 16-16zm32 128c8.8 0 16-7.2 16-16l0-64c0-8.8-7.2-16-16-16l-16 0 0 96 16 0zm80-112c0-8.8 7.2-16 16-16l48 0c8.8 0 16 7.2 16 16s-7.2 16-16 16l-32 0 0 32 32 0c8.8 0 16 7.2 16 16s-7.2 16-16 16l-32 0 0 48c0 8.8-7.2 16-16 16s-16-7.2-16-16l0-64 0-64z"
+        />
+      </svg>`;
+
+      async function populatePosts() {
+        const posts = await fetch("pages.json").then((res) => res.json());
+        posts.reverse();
+        const postsDiv = document.querySelector(".posts");
+        const fmt = new Intl.DateTimeFormat("en-US", {
+          dateStyle: "long",
+        });
+
+        for (const post of posts) {
+          const postDiv = document.createElement("div");
+          postDiv.classList.add("post");
+
+          const detailsDiv = document.createElement("div");
+          detailsDiv.classList.add("details");
+
+          const h2 = document.createElement("h2");
+          const a = document.createElement("a");
+          a.href = `page/${post.url}`;
+          a.textContent = post.title;
+          h2.appendChild(a);
+
+          if (post.pdf) {
+            const pdfA = document.createElement("a");
+            pdfA.href = `page/${post.pdf}`;
+            pdfA.classList.add("pdf");
+            pdfA.innerHTML = pdfSvg;
+            h2.appendChild(pdfA);
+          }
+
+          const dateDiv = document.createElement("div");
+          dateDiv.classList.add("date");
+          dateDiv.textContent = fmt.format(new Date(post.date));
+
+          detailsDiv.appendChild(h2);
+          detailsDiv.appendChild(dateDiv);
+
+          const p = document.createElement("p");
+          p.textContent = post.description;
+
+          postDiv.appendChild(detailsDiv);
+          postDiv.appendChild(p);
+
+          postsDiv.appendChild(postDiv);
+        }
+      }
+    </script>
   </head>
   <body>
     <main>
-      <h1>Dipam's Notebook</h1>
-      <p>stuff about programming, math and more</p>
+      <header>
+        <div class="left">
+          <h1>Dipam's Notebook</h1>
+          <p>stuff about programming, math and more</p>
+        </div>
+        <div class="right">
+          <input
+            type="checkbox"
+            name="theme-switch"
+            id="theme-switch"
+            class="theme-switch"
+            onclick="toggleTheme()"
+          />
+          <label for="theme-switch" class="theme-switch-label"></label>
+        </div>
+      </header>
 
-      <div class="posts">
-        <div class="post">
-          <div class="details">
-            <h2>
-              <a href="page/collisions.html"> Elastic Collisions </a>
-              <a href="page/collisions.pdf" class="pdf">
-                <img src="assets/pdf.svg" alt="pdf" width="20" />
-              </a>
-            </h2>
-            <div class="date">May 31, 2024</div>
-          </div>
-          <p>
-            Solutions to one and two dimensional elastic collisions of spheres.
-          </p>
-        </div>
-        <div class="post">
-          <div class="details">
-            <h2>
-              <a href="page/100boxes.html"> 100 Boxes </a>
-            </h2>
-            <div class="date">February 19, 2024</div>
-          </div>
-          <p>
-            Overcomplicating simple probability results by using conditional
-            probabilities and the total probability theorem.
-          </p>
-        </div>
-      </div>
+      <div class="posts"></div>
     </main>
 
     <footer>
@@ -64,6 +138,10 @@
             class="dark"
           />
         </a>
+        <p>
+          Powered by
+          <a href="https://typst.app" class="typst">Typst</a>
+        </p>
       </div>
     </footer>
   </body>
