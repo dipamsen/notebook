@@ -86,7 +86,7 @@
     html.elem(
       "div",
       attrs: ("class": "declare"),
-      html.elem("a", [Dipam's Notebook], attrs: ("href": "/"))
+      html.elem("a", [Dipam's Notebook], attrs: ("href": "../"))
         + html.elem(
           "input",
           attrs: (
