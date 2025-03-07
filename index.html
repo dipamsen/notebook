@@ -70,10 +70,13 @@
           const h2 = document.createElement("h2");
           const a = document.createElement("a");
           a.href = `page/${post.path}.html`;
+          if (post.pdf && post.html === false) {
+            a.href = `page/${post.path}.pdf`;
+          }
           a.textContent = post.title;
           h2.appendChild(a);
 
-          if (post.pdf) {
+          if (post.pdf && !("html" in post)) {
             const pdfA = document.createElement("a");
             pdfA.href = `page/${post.path}.pdf`;
             pdfA.classList.add("pdf");

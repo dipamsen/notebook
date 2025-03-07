@@ -1,0 +1,7 @@
+{
+  "tinymist.rootPath": "${workspaceFolder}",
+  "tinymist.exportTarget": "html",
+  "tinymist.typstExtraArgs": ["--input", "fmt=html"],
+  "tinymist.fontPaths": ["assets/fonts"],
+  "tinymist.outputPath": "$root/page/$name"
+}

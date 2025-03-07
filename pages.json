@@ -12,5 +12,13 @@
     "path": "collisions",
     "date": "2024-05-31",
     "pdf": true
+  },
+  {
+    "title": "Frost Diagrams",
+    "description": "Understanding redox behaviour of different species using Frost diagrams.",
+    "path": "frost-diagrams",
+    "date": "2025-03-07",
+    "pdf": true,
+    "html": false
   }
 ]
