@@ -57,12 +57,18 @@
         posts.reverse();
         const postsDiv = document.querySelector(".posts");
         const fmt = new Intl.DateTimeFormat("en-US", {
-          dateStyle: "long",
+          // dateStyle: "long",
+          day: "numeric",
+          month: "short",
+          year: "numeric",
         });
 
         for (const post of posts) {
           const postDiv = document.createElement("div");
           postDiv.classList.add("post");
+
+          const infoDiv = document.createElement("div");
+          infoDiv.classList.add("info");
 
           const detailsDiv = document.createElement("div");
           detailsDiv.classList.add("details");
@@ -94,8 +100,10 @@
           const p = document.createElement("p");
           p.textContent = post.description;
 
-          postDiv.appendChild(detailsDiv);
-          postDiv.appendChild(p);
+          infoDiv.appendChild(detailsDiv);
+          infoDiv.appendChild(p);
+
+          postDiv.appendChild(infoDiv);
 
           postsDiv.appendChild(postDiv);
         }
@@ -131,13 +139,13 @@
           <img
             src="assets/github-mark.svg"
             alt="github"
-            width="30"
+            width="25"
             class="light"
           />
           <img
             src="assets/github-mark-white.svg"
             alt="github"
-            width="30"
+            width="25"
             class="dark"
           />
         </a>

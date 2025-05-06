@@ -4,9 +4,13 @@
   "description": "stuff about programming, math and more",
   "type": "module",
   "scripts": {
-    "compile": "node scripts/compile.js"
+    "compile": "node scripts/compile.js",
+    "serve": "serve"
   },
   "keywords": [],
   "author": "Dipam Sen",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "serve": "^14.2.4"
+  }
 }

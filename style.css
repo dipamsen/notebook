@@ -4,12 +4,19 @@
   box-sizing: border-box;
 
   color-scheme: light dark;
+
+  --color-green: #1db66c;
 }
 
 body {
   font-family: "Figtree", sans-serif;
   background-color: #f9f6f9;
   color: #100a10;
+}
+
+[data-theme="dark"] body {
+  background-color: #090609;
+  color: #f5eff5;
 }
 
 main {
@@ -19,8 +26,9 @@ main {
 }
 
 h1 {
-  font-size: 2rem;
+  font-size: 1.5rem;
   margin-bottom: 1rem;
+  font-weight: 650;
 }
 
 .posts {
@@ -28,27 +36,56 @@ h1 {
 }
 
 .post {
-  background-color: #fff;
-  padding: 1rem;
-  margin-bottom: 1rem;
+  /* background-color: #fff; */
+  /* padding: 1rem; */
+  margin-bottom: 2rem;
   border-radius: 5px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+}
+
+[data-theme="dark"] .post {
+  /* background-color: #1e1e1e; */
+  color: #f9f6f9;
+}
+
+.post .info {
+  flex: 1;
 }
 
 .post .details {
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.post::before {
+  content: "-";
+  display: block;
+  margin-right: 1rem;
+  font-size: 1.3rem;
 }
 
 h2 {
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
-  color: #14854f;
+  font-size: 1.3rem;
+  color: var(--color-green);
+  font-weight: 600;
+  flex: 1;
+}
+
+.post .details .date {
+  font-size: 0.9rem;
+  color: #757575;
 }
 
 a {
   color: inherit;
   text-decoration: none;
+}
+
+[data-theme="dark"] a {
+  color: var(--color-green);
 }
 
 footer {
@@ -72,10 +109,18 @@ footer {
   }
 }
 
+[data-theme="dark"] footer {
+  background-color: #1e1e1e;
+
+  & a {
+    color: #f9f6f9;
+  }
+}
+
 pre {
   font-family: "Azeret Mono", monospace;
   font-weight: 600;
-  font-size: 1.2rem;
+  font-size: 1rem;
 }
 
 .dark {
@@ -154,34 +199,12 @@ footer a.typst {
   font-weight: 700;
 }
 
+[data-theme="dark"] footer a.typst {
+  color: #14aac0;
+  font-weight: 700;
+}
+
 [data-theme="dark"] {
-  & body {
-    background-color: #090609;
-    color: #f5eff5;
-  }
-
-  & .post {
-    background-color: #1e1e1e;
-    color: #f9f6f9;
-  }
-
-  & a {
-    color: #14854f;
-  }
-
-  & footer {
-    background-color: #1e1e1e;
-
-    & a {
-      color: #f9f6f9;
-    }
-  }
-
-  & footer a.typst {
-    color: #14aac0;
-    font-weight: 700;
-  }
-
   & .dark {
     display: block;
   }
