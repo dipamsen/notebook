@@ -64,6 +64,7 @@
         });
 
         for (const post of posts) {
+          if (post.hidden) continue;
           const postDiv = document.createElement("div");
           postDiv.classList.add("post");
 

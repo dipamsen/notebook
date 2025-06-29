@@ -23,9 +23,10 @@
   },
   {
     "title": "Regular Expressions: From theory to practice",
-    "description": "A deep dive into regular expressions, their underlying theory, and implementing them.",
+    "description": "A deep dive into regular expressions, their underlying theory, and their implementation.",
     "path": "regex",
     "date": "2025-06-30",
-    "pdf": true
+    "pdf": true,
+    "hidden": true
   }
 ]
