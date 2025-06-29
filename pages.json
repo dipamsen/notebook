@@ -20,5 +20,12 @@
     "date": "2025-03-07",
     "pdf": true,
     "html": false
+  },
+  {
+    "title": "Regular Expressions: From theory to practice",
+    "description": "A deep dive into regular expressions, their underlying theory, and implementing them.",
+    "path": "regex",
+    "date": "2025-06-30",
+    "pdf": true
   }
 ]

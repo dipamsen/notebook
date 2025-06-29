@@ -1,4 +1,4 @@
-import pages from "../pages.json" assert { type: "json" };
+import pages from "../pages.json" with { type: "json" };
 import fs from "fs";
 import { execSync } from "child_process";
 

@@ -1,4 +1,5 @@
 #import "@preview/cetz:0.3.2"
+#import "@preview/zebraw:0.5.5": zebraw
 
 #let output-format = sys.inputs.at("fmt")
 
@@ -163,7 +164,7 @@
     ],
     header: context [
       #set text(luma(100))
-      #link("https://dipamsen.github.io/notebook")[Dipam's Notebook]
+      #link("https://dipamsen.github.io/notebook")[Dipam\'s Notebook]
       #h(1fr)
       #title
     ],
@@ -176,6 +177,8 @@
   show grid: polyfill-html(class: "grid")
 
   show block: polyfill-html(class: "box")
+
+  //show raw.where(block: true): zebraw
 
   if output-format == "html" {
     html.elem(
