@@ -38,10 +38,10 @@ main {
     text-align: left;
   }
 
-  .frame-block {
+  /* .frame-block {
     overflow-x: auto !important;
     max-width: 100% !important;
-  }
+  } */
 
   .scroll-x {
     overflow-x: auto;
