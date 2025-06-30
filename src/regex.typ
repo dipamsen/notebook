@@ -1,4 +1,4 @@
-#import "../template.typ": blog-post, custom-css, diagram, polyfill-html
+#import "../template.typ": blog-post, custom-css, diagram, hscroll, polyfill-html
 #import "@preview/cetz:0.4.0"
 #import "@preview/fletcher:0.5.8" as fletcher: edge, node
 #import "@preview/zebraw:0.5.5": zebraw
@@ -216,16 +216,18 @@ The syntax we will support will include `.` (wildcard), quantifiers `+, ?, *` an
 This is the first step in our workflow. Now there are many ways to go about this. This goes into theory of compilers, which I won't delve into in this post (mainly because I don't know much about it), but I implemented a *recursive descent* parser based on a grammar:
 
 
-```txt
-Regex          ::= Alternation
-Alternation    ::= Concatenation '|' ... '|' Concatenation
-Concatenation  ::= QuantifiedAtom ... QuantifiedAtom
-QuantifiedAtom ::= Atom Quantifier | Atom
-Atom           ::= Character | Group | Dot
-Dot            ::= '.'
-Quantifier     ::= '*' | '+' | '?'
-Group          ::= '(' Alternation ')'
-```
+#hscroll(
+  ```txt
+  Regex          ::= Alternation
+  Alternation    ::= Concatenation '|' ... '|' Concatenation
+  Concatenation  ::= QuantifiedAtom ... QuantifiedAtom
+  QuantifiedAtom ::= Atom Quantifier | Atom
+  Atom           ::= Character | Group | Dot
+  Dot            ::= '.'
+  Quantifier     ::= '*' | '+' | '?'
+  Group          ::= '(' Alternation ')'
+  ```,
+)
 
 (Note that here 'Alternation' represents a union operation. 'Atom' refers to a single unit on which quantifiers can be applied.)
 
