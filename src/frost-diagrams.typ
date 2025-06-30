@@ -1,12 +1,9 @@
-#import "../template.typ": blog-post, canvas, numbered, boxed
-#import "@preview/cetz:0.3.2"
+#import "../template.typ": blog-post, boxed, canvas, numbered
+#import "@preview/cetz:0.4.0"
 #import "@preview/typsium:0.2.0": ce
-#import "@preview/fletcher:0.5.6": diagram, node, edge
+#import "@preview/fletcher:0.5.6": diagram, edge, node
 
-#show: blog-post.with(
-  title: "Frost Diagrams",
-  date: datetime(day: 7, month: 3, year: 2025),
-)
+#show: blog-post.with(title: "Frost Diagrams", date: datetime(day: 7, month: 3, year: 2025))
 
 #show math.equation.where(block: false): math.display
 
@@ -17,7 +14,7 @@ This is an explanation of Frost diagrams - what they are, what do they show, and
 A redox reaction is one, where the oxidation state of its reactants changes. In such a reaction, two processes - oxidation and reduction - occur simultaneously. For example, in the reaction between zinc and copper ions, zinc is oxidized to zinc ions, while copper ions are reduced to copper. The reaction can be written as follows:
 
 $
-  &ce("Zn + Cu^(2+) -> Zn^(2+) + Cu")\
+  & ce("Zn + Cu^(2+) -> Zn^(2+) + Cu") \
 $
 
 where we have the following half-reactions:
@@ -27,7 +24,7 @@ $
 $
 
 $
-  "Reduction": &ce("Cu^(2+) + 2e^- -> Cu")\
+  "Reduction": & ce("Cu^(2+) + 2e^- -> Cu") \
 $
 
 #let E0 = $E^circle.small$
@@ -50,7 +47,7 @@ where #E0cat is the standard reduction potential of the cathode and #E0an is the
 The standard cell potential can be used to determine the feasibility of a redox reaction. If the standard cell potential is positive, the reaction is spontaneous, while if it is negative, the reaction is non-spontaneous. This can be directly related to the Gibbs free energy change of the reaction:
 
 $
-  &Delta G^circle.small = -n F E0cell\
+  & Delta G^circle.small = -n F E0cell \
 $
 
 where $n$ is the number of electrons transferred in the reaction and $F$ is the Faraday constant.
@@ -99,7 +96,7 @@ Now, we want to summarise the redox behaviour of these species in a diagram. We 
 
       for i in range(species.len()) {
         node((i, 0), ce(species.at(i)))
-        node((i, -0.5), $small(#(if os.at(i).signum() == 1 {$+$} else {}) #os.at(i))$)
+        node((i, -0.5), $small(#(if os.at(i).signum() == 1 { $+$ } else {}) #os.at(i))$)
       }
 
       for i in range(pot.len()) {
@@ -137,9 +134,9 @@ $
 So, thus we have
 
 $
-  E0 (ce("O2 -> H2O")\) &= ((2 times E0 \(ce("O2 -> H2O2")\) + 2 times E0 \(ce("H2O2 -> H2O")\))) / 4\
-  &= ((2 times 0.68 "V"+ 2 times 1.78 "V")) / 4\
-  &= 1.23 "V"\
+  E0 (ce("O2 -> H2O")\) & = ((2 times E0 \(ce("O2 -> H2O2")\) + 2 times E0 \(ce("H2O2 -> H2O")\))) / 4 \
+                        & = ((2 times 0.68 "V"+ 2 times 1.78 "V")) / 4                                 \
+                        & = 1.23 "V"                                                                   \
 $
 
 
@@ -169,9 +166,9 @@ $
   Delta G_1 = -n_1 F E0_1 = -2 F times 1.63 "V"\
   Delta G_2 = -n_2 F E0_2 = -2 F times 1.36 "V"\
 $$
-  Delta G = Delta G_1 + Delta G_2 &= -2 F times (1.63 "V" + 1.36 "V")\
-  -4 F times E0 &= -2 F times (1.63 "V" + 1.36 "V")\
-  E0 &= (1.63 "V" + 1.36 "V") / 2 = 1.5 "V" \
+  Delta G = Delta G_1 + Delta G_2 & = -2 F times (1.63 "V" + 1.36 "V")    \
+                    -4 F times E0 & = -2 F times (1.63 "V" + 1.36 "V")    \
+                               E0 & = (1.63 "V" + 1.36 "V") / 2 = 1.5 "V" \
 $
 
 == Disproportionation
@@ -226,17 +223,19 @@ Now, since potentials are not additive, let's try to find the free energy of eac
 Then, e.g. for $ce("N2O4")$, we have:
 
 $
-  G(ce("HNO2")) = Delta G \(ce("N2 -> HNO2")\) &= Delta G_1 + Delta G_2 + Delta G_3\
-  &= - 1 F (-1.77) - 1 F (-1.59) - 1 F (-0.996)\
-  &= - F (-1.77 - 1.59 - 0.996)\
-  &= F (4.356)\
+  G(ce("HNO2")) = Delta G \(ce("N2 -> HNO2")\) & = Delta G_1 + Delta G_2 + Delta G_3          \
+                                               & = - 1 F (-1.77) - 1 F (-1.59) - 1 F (-0.996) \
+                                               & = - F (-1.77 - 1.59 - 0.996)                 \
+                                               & = F (4.356)                                  \
 $
 
 Similarly, if we find the free energy of each species, we get
 
-#figure(
-  table(columns: 9, align: center)[#ce("NO3^-")][#ce("N2O4")][#ce("HNO2")][#ce("NO")][#ce("N2O")][#ce("N2")][#ce("NH3OH^+")][#ce("N2H5^+")][#ce("NH4^+")][$6.229 F$][$5.426 F$][$4.356 F$][$3.36 F$][$1.77 F$][$0$][$1.87 F$][$0.46 F$][$-0.815 F$],
-)
+#figure(table(columns: 9, align: center)[#ce("NO3^-")][#ce("N2O4")][#ce("HNO2")][#ce("NO")][#ce("N2O")][#ce("N2")][#ce(
+    "NH3OH^+",
+  )][#ce("N2H5^+")][#ce(
+    "NH4^+",
+  )][$6.229 F$][$5.426 F$][$4.356 F$][$3.36 F$][$1.77 F$][$0$][$1.87 F$][$0.46 F$][$-0.815 F$])
 
 
 The above data gives a clear picture of the stability of the species. For example, $ce("NH4^+")$ is the most stable species, while $ce("NO3^-")$ is the least stable.

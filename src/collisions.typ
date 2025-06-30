@@ -1,10 +1,7 @@
-#import "../template.typ": blog-post, canvas, numbered, boxed
-#import "@preview/cetz:0.3.2"
+#import "../template.typ": blog-post, boxed, canvas, numbered
+#import "@preview/cetz:0.4.0"
 
-#show: blog-post.with(
-  title: "Elastic Collisions",
-  date: datetime(day: 31, month: 5, year: 2024),
-)
+#show: blog-post.with(title: "Elastic Collisions", date: datetime(day: 31, month: 5, year: 2024))
 
 
 During collision of two spherical masses, the total momentum of the system remains conserved, owing to the lack of any external force present on the system. #footnote[Even if any other force is present, it can be neglected in comparison to the force of collision, which is very large, as it causes a finite change in momentum in infinitesimal time.] Different types of collision are distinguished based on
@@ -26,72 +23,65 @@ There are two possible ways in which this can happen:
 
 == One Dimensional Elastic Collision
 
-#let figa = canvas(
-  length: 0.8cm,
-  {
-    import cetz.draw: *
-    circle((0, 0), name: "a")
+#let figa = canvas(length: 0.8cm, {
+  import cetz.draw: *
+  circle((0, 0), name: "a")
 
-    line((0, 0), (radius: 1.6, angle: 0deg), mark: (end: "stealth", fill: black), name: "v1")
-    content("v1.end", h(1mm) + $v_1$, anchor: "west")
-    content("a", v(2mm) + $m_1$, anchor: "north")
+  line((0, 0), (radius: 1.6, angle: 0deg), mark: (end: "stealth", fill: black), name: "v1")
+  content("v1.end", h(1mm) + $v_1$, anchor: "west")
+  content("a", v(2mm) + $m_1$, anchor: "north")
 
-    group({
-      translate((4, 0))
-      circle((0, 0), name: "b")
+  group({
+    translate((4, 0))
+    circle((0, 0), name: "b")
 
-      line((0, 0), (radius: 1.5, angle: 0deg), mark: (end: "stealth", fill: black), name: "v2")
-      content("v2.end", h(1mm) + $v_2$, anchor: "west")
-      content("b", v(2mm) + $m_2$, anchor: "north")
-    })
-  },
-)
+    line((0, 0), (radius: 1.5, angle: 0deg), mark: (end: "stealth", fill: black), name: "v2")
+    content("v2.end", h(1mm) + $v_2$, anchor: "west")
+    content("b", v(2mm) + $m_2$, anchor: "north")
+  })
+})
 
 
-#let figb = canvas(
-  length: 0.8cm,
-  {
-    import cetz.draw: *
-    circle((0, 0), name: "a")
+#let figb = canvas(length: 0.8cm, {
+  import cetz.draw: *
+  circle((0, 0), name: "a")
 
-    line((0, 0), (radius: 1.6, angle: 0deg), mark: (end: "stealth", fill: black), name: "v1")
-    content("v1.end", h(1mm) + $v'_1$, anchor: "west")
-    content("a", v(2mm) + $m_1$, anchor: "north")
+  line((0, 0), (radius: 1.6, angle: 0deg), mark: (end: "stealth", fill: black), name: "v1")
+  content("v1.end", h(1mm) + $v'_1$, anchor: "west")
+  content("a", v(2mm) + $m_1$, anchor: "north")
 
-    group({
-      translate((4, 0))
-      circle((0, 0), name: "b")
+  group({
+    translate((4, 0))
+    circle((0, 0), name: "b")
 
-      line((0, 0), (radius: 1.5, angle: 0deg), mark: (end: "stealth", fill: black), name: "v2")
-      content("v2.end", h(1mm) + $v'_2$, anchor: "west")
-      content("b", v(2mm) + $m_2$, anchor: "north")
-    })
-  },
-)
+    line((0, 0), (radius: 1.5, angle: 0deg), mark: (end: "stealth", fill: black), name: "v2")
+    content("v2.end", h(1mm) + $v'_2$, anchor: "west")
+    content("b", v(2mm) + $m_2$, anchor: "north")
+  })
+})
 
-#align(
-  center,
-  grid(
-    columns: 2,
-    gutter: 3em,
-    figa + [Initial], figb + [Final],
-  ),
-)
+#align(center, table(
+  stroke: none,
+  inset: 0pt,
+  columns: 2,
+  gutter: 3em,
+  figa + [Initial], figb + [Final],
+))
 
 The two constraints in the collision are kinetic energy conservation and momentum conservation. Using these relations,
 we can determine the final velocities of the spheres.
 $
-  m_1 v_1 + m_2 v_2 &= m_1 v'_1 + m_2 v'_2
+  m_1 v_1 + m_2 v_2 & = m_1 v'_1 + m_2 v'_2
 $
 #numbered[
   $
-    => m_1 (v_1 - v'_1) &= m_2 (v'_2 - v_2 )
+    => m_1 (v_1 - v'_1) & = m_2 (v'_2 - v_2 )
   $
 ]
 $
-  1 / 2 m_1 v_1^2 + 1 / 2 m_2 v_2^2 &= 1 / 2 m_1 v'_1^2 + 1 / 2 m_2 v'_2^2
+  1 / 2 m_1 v_1^2 + 1 / 2 m_2 v_2^2 & = 1 / 2 m_1 v'_1^2 + 1 / 2 m_2 v'_2^2
 $#numbered[$
-    => m_1 (v_1^2 - v'_1^2 ) &= m_2 (v'_2^2 - v_2^2)
+    => m_1 (v_1^2 - v'_1^2 ) & = m_2 (v'_2^2 - v_2^2)
   $
 ]
 
@@ -99,9 +89,9 @@ $#numbered[$
 Dividing (2) by (1), we get:
 
 $
-  (m_1 (v_1^2 - v'_1^2)) / (m_1 (v_1 - v'_1)) &= (m_2 (v'_2^2 - v_2^2)) / (m_2 (v'_2 - v_2))\
-  => v_1 + v'_1 &= v'_2 + v_2\
-  => v'_1 - v'_2 &= v_2 - v_1
+  (m_1 (v_1^2 - v'_1^2)) / (m_1 (v_1 - v'_1)) & = (m_2 (v'_2^2 - v_2^2)) / (m_2 (v'_2 - v_2)) \
+                                => v_1 + v'_1 & = v'_2 + v_2                                  \
+                               => v'_1 - v'_2 & = v_2 - v_1
 $
 
 Using the above relation, along with (1), we have a system of two linear equations in two variables, which can be solved
@@ -118,12 +108,12 @@ Multiply (3) by $m_1$ and subtract from (4), on simplification, we get our solut
 
 $
   #boxed[$display(v'_1 &= (m_1 - m_2) / (m_1 + m_2 ) v_1 + (2 m_2)/ (m_1 + m_2) v_2)$] \
-    #boxed[$display(v'_2 &= (m_2 - m_1) / (m_1 + m_2 ) v_2 + (2 m_1)/ (m_1 + m_2) v_1)$]
+  #boxed[$display(v'_2 &= (m_2 - m_1) / (m_1 + m_2 ) v_2 + (2 m_1)/ (m_1 + m_2) v_1)$]
 $
 
 
 #let th = $text(#blue, #$med hat(t)med$)$
-#let nh = $text(#red, #$med hat(n)med $)$
+#let nh = $text(#red, #$med hat(n)med$)$
 
 
 
@@ -242,72 +232,52 @@ only imparts force along the line of impact, the tangential velocities don't cha
   })
 })
 
-#align(
-  center,
-  grid(
-    columns: 3,
-    gutter: 2.5em,
-    align(horizon, fig1), fig2, fig3,
-  ),
-)
+#align(center, table(
+  stroke: none,
+  inset: 0pt,
+  columns: 3,
+  gutter: 2.5em,
+  align(horizon, fig1), fig2, fig3,
+))
 
 Components of velocity in the #nh direction (along the line of impact) can be resolved by using the formula for
 one-dimensional elastic collision, whereas velocities in the #th direction remain unchanged.
 
-#align(
-  center,
-  grid(columns: 2, align: horizon, column-gutter: 3em, row-gutter: 1em)[
-    $ v'_(1n) = (m_1-m_2) / (m_1 + m_2)med v_(1n) + (2m_2) / (m_1 + m_2) med v_(2n) $
-  ][
-    $ v'_(1t) = v_(1t) $
-  ][
-    $ v'_(2n) = (m_2-m_1) / (m_1 + m_2) med v_(2n) + (2m_1) / (m_1 + m_2) med v_(1n) $
-  ][
-    $v'_(2t) = v_(2t)$
-  ],
-)
+#align(center, table(stroke: none, inset: 0pt, columns: 2, align: horizon, column-gutter: 3em, row-gutter: 1em)[
+  $ v'_(1n) = (m_1-m_2) / (m_1 + m_2)med v_(1n) + (2m_2) / (m_1 + m_2) med v_(2n) $
+][
+  $ v'_(1t) = v_(1t) $
+][
+  $ v'_(2n) = (m_2-m_1) / (m_1 + m_2) med v_(2n) + (2m_1) / (m_1 + m_2) med v_(1n) $
+][
+  $v'_(2t) = v_(2t)$
+])
 
-The final velocities $arrow(v'_1)$ and $arrow(v'_2)$ are obtained by the vector sum of the respective #nh and #th components. $
-    => arrow(v'_1) &= v'_(1n) nh + v'_(1t) th\
-    arrow(v'_1)    &= lr(((m_1-m_2)/(m_1 + m_2)med v_(1n) + (2m_2)/(m_1 + m_2) med v_(2n))) nh + v_(1t) th\
-  $
+The final velocities $arrow(v'_1)$ and $arrow(v'_2)$ are obtained by the vector sum of the respective #nh and #th components. $ => arrow(v'_1) & = v'_(1n) nh + v'_(1t) th                                                              \
+   arrow(v'_1) & = lr(((m_1-m_2)/(m_1 + m_2)med v_(1n) + (2m_2)/(m_1 + m_2) med v_(2n))) nh + v_(1t) th \ $
 This is the value of
 $arrow(v'_1)$ in terms of components of initial velocities, and unit vectors along the line of impact and tangent to it.
 This can be converted into a vector expression, by subtracting the initial velocity vector $arrow(v_1)
-  = v_(1n) nh + v_(1t) th$ from $arrow(v'_1)$.
+= v_(1n) nh + v_(1t) th$ from $arrow(v'_1)$.
 
-Subtracting $arrow(v_1)$ from $arrow(v'_1)$, $
-    arrow(v'_1) - arrow(v_1) &= (lr(((m_1-m_2)/(m_1 + m_2)med v_(1n) + (2m_2)/(m_1 + m_2) med v_(2n))) nh + med
-    cancel(v_(1t) th)) - (v_(1n) nh + med cancel(v_(1t) th))\
-                             &= ((m_1-m_2)/(m_1 + m_2)med v_(1n) + (2m_2)/(m_1 + m_2) med v_(2n) - v_(1n)) nh\
-                             &= ((-2m_2)/(m_1 + m_2)med v_(1n) + (2m_2)/(m_1 + m_2) med v_(2n)) nh\
-                             &= (2m_2)/(m_1 + m_2)med (v_(2n) - v_(1n)) nh\
-  $
+Subtracting $arrow(v_1)$ from $arrow(v'_1)$, $ arrow(v'_1) - arrow(v_1) & = (lr(((m_1-m_2)/(m_1 + m_2)med v_(1n) + (2m_2)/(m_1 + m_2) med v_(2n))) nh + med
+                             cancel(v_(1t) th)) - (v_(1n) nh + med cancel(v_(1t) th))                      \
+                         & = ((m_1-m_2)/(m_1 + m_2)med v_(1n) + (2m_2)/(m_1 + m_2) med v_(2n) - v_(1n)) nh \
+                         & = ((-2m_2)/(m_1 + m_2)med v_(1n) + (2m_2)/(m_1 + m_2) med v_(2n)) nh            \
+                         & = (2m_2)/(m_1 + m_2)med (v_(2n) - v_(1n)) nh                                    \ $
 Here, we can substitute
-$v_(1n) = arrow(v_1) dot nh$ and $v_(2n) = arrow(v_2) dot nh$. $
-    arrow(v'_1) = arrow(v_1) + (2m_2)/(m_1 + m_2)med ((arrow(v_2) - arrow(v_1)) dot nh) nh\
-  $
+$v_(1n) = arrow(v_1) dot nh$ and $v_(2n) = arrow(v_2) dot nh$. $ arrow(v'_1) = arrow(v_1) + (2m_2)/(m_1 + m_2)med ((arrow(v_2) - arrow(v_1)) dot nh) nh\ $
 The unit vector along the line of impact,
 $nh$, is in the direction of the difference of position vectors of bodies 1 and 2. If $arrow(x)$ denotes the position
-vector of the centre of the body, $
-    nh = (arrow(x_2) - arrow(x_1))/(|arrow(x_2) - arrow(x_1)|)
-  $
+vector of the centre of the body, $ nh = (arrow(x_2) - arrow(x_1))/(|arrow(x_2) - arrow(x_1)|) $
 #pagebreak(weak: true)
 By substituting all values, we get a vector expression for
-$arrow(v'_1)$. The expression of $arrow(v'_2)$ can be symmetrically obtained. $
-    #boxed(
-      $
-        display(
-          arrow(v'_1) = arrow(v_1) + (2 m_2) / (m_1 + m_2) ((arrow(v_2) - arrow(v_1)) dot (arrow(x_2) - arrow(x_1)))/(|arrow(x_2) - arrow(x_1)|^2) (arrow(x_2) - arrow(x_1))
-        )$,
-    )\
-    #boxed(
-      $
-        display(
-          arrow(v'_2) = arrow(v_2) + (2 m_1) / (m_1 + m_2) ((arrow(v_1) - arrow(v_2)) dot (arrow(x_1) - arrow(x_2)))/(|arrow(x_1) - arrow(x_2)|^2) (arrow(x_1) - arrow(x_2))
-        )$,
-    )
-  $
+$arrow(v'_1)$. The expression of $arrow(v'_2)$ can be symmetrically obtained. $ #boxed($display(
+  arrow(v'_1) = arrow(v_1) + (2 m_2) / (m_1 + m_2) ((arrow(v_2) - arrow(v_1)) dot (arrow(x_2) - arrow(x_1)))/(|arrow(x_2) - arrow(x_1)|^2) (arrow(x_2) - arrow(x_1))
+)$)\
+#boxed($display(
+  arrow(v'_2) = arrow(v_2) + (2 m_1) / (m_1 + m_2) ((arrow(v_1) - arrow(v_2)) dot (arrow(x_1) - arrow(x_2)))/(|arrow(x_1) - arrow(x_2)|^2) (arrow(x_1) - arrow(x_2))
+)$) $
 #v(3em)
 #align(center, line(length: 50%))
 

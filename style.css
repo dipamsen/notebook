@@ -6,12 +6,19 @@
   color-scheme: light dark;
 
   --color-green: #1db66c;
+  --color-dark-green: #157a49;
 }
 
 body {
   font-family: "Figtree", sans-serif;
   background-color: #f9f6f9;
   color: #100a10;
+
+  font-size: 18px;
+
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 [data-theme="dark"] body {
@@ -20,9 +27,10 @@ body {
 }
 
 main {
-  max-width: 800px;
+  max-width: 1000px;
   margin: 2rem auto;
   padding: 0 1rem;
+  flex: 1;
 }
 
 h1 {
@@ -59,6 +67,14 @@ h1 {
   margin-bottom: 1rem;
 }
 
+@media (max-width: 600px) {
+  .post .details {
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: flex-start;
+  }
+}
+
 .post::before {
   content: "-";
   display: block;
@@ -68,7 +84,7 @@ h1 {
 
 h2 {
   font-size: 1.3rem;
-  color: var(--color-green);
+  color: var(--color-dark-green);
   font-weight: 600;
   flex: 1;
 }
@@ -90,9 +106,6 @@ a {
 footer {
   background-color: #dedcde;
   padding: 1rem;
-  margin-top: 2rem;
-  position: fixed;
-  bottom: 0;
   width: 100%;
 
   & .contain {
@@ -100,7 +113,7 @@ footer {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    max-width: 800px;
+    max-width: 1000px;
   }
 
   & a {
@@ -215,4 +228,13 @@ footer a.typst {
   & .declare {
     color: #ababab;
   }
+
+  & h2 {
+    color: var(--color-green);
+  }
+}
+
+.theme-switch,
+.theme-switch-label {
+  display: none;
 }

@@ -16,11 +16,11 @@
       document.addEventListener("DOMContentLoaded", () => {
         const lskey = "dsnb-theme";
         const theme = localStorage.getItem(lskey);
-        if (theme) {
-          document.body.parentElement.setAttribute("data-theme", theme);
-        } else {
-          document.body.parentElement.setAttribute("data-theme", "dark");
-        }
+        // if (theme) {
+        //   document.body.parentElement.setAttribute("data-theme", theme);
+        // } else {
+        //   document.body.parentElement.setAttribute("data-theme", "dark");
+        // }
         const themeSwitch = document.getElementById("theme-switch");
         themeSwitch.checked =
           document.body.parentElement.getAttribute("data-theme") === "dark";

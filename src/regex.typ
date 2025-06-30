@@ -1,6 +1,7 @@
-#import "../template.typ": blog-post, polyfill-html
-#import "@preview/cetz:0.3.2"
-#import "@preview/fletcher:0.5.8" as fletcher: diagram, edge, node
+#import "../template.typ": blog-post, custom-css, diagram, polyfill-html
+#import "@preview/cetz:0.4.0"
+#import "@preview/fletcher:0.5.8" as fletcher: edge, node
+#import "@preview/zebraw:0.5.5": zebraw
 
 #show: blog-post.with(title: "Regular Expressions: From theory to practice", date: datetime(
   day: 30,
@@ -8,14 +9,15 @@
   year: 2025,
 ))
 
-#show figure: polyfill-html()
-
 #show raw.where(lang: "regex"): polyfill-html(block: false)
 
 #show raw.where(lang: "regex"): it => {
   show regex(`\\.`.text): box.with(fill: luma(120).lighten(60%), outset: (x: 0.3pt, y: 2pt))
-  show regex(`(^|[^\\])(\.|\+|\?|\||\(|\)|\*)`.text): box.with(fill: blue.lighten(60%), outset: (x: 0.3pt, y: 2pt))
-  show regex("[A-Za-z0-9]"): box.with(fill: luma(120).lighten(60%), outset: (x: 0.3pt, y: 2pt))
+  show regex(`(^|[^\\])(\.|\+|\?|\||\(|\)|\*|\[|\]|\{|\})`.text): box.with(fill: blue.lighten(60%), outset: (
+    x: 0.3pt,
+    y: 2pt,
+  ))
+  show regex("[A-Za-z0-9\-,]"): box.with(fill: luma(120).lighten(60%), outset: (x: 0.3pt, y: 2pt))
   it
 }
 
@@ -141,12 +143,13 @@ To recap what has been said till now:
 
 This means for each regular language, there exists a finite automaton that recognizes it, and there exists a regular expression that describes it.
 
-Formally, a regular expression is defined somewhat as follows:
+Formally, a regular expression is defined as follows:
 
-1. For any character `c`, the string `c` is a regular expression that describes the language containing only the string `c`.
-2. If `r1` and `r2` are regular expressions, then the *concatenation* `r1r2` is a regular expression that describes the language containing all strings formed by concatenating a string from the language described by `r1` with a string from the language described by `r2`.
-3. If `r1` and `r2` are regular expressions, then the *union* `r1|r2` is a regular expression that describes the language containing all strings that are either in the language described by `r1` or in the language described by `r2`.
-4. If `r1` is a regular expression, then the *Kleene star* `r1*` is a regular expression that describes the language containing all strings that can be formed by concatenating zero or more strings from the language described by `r1`.
+1. The symbol $epsilon$ is a regular expression that describes the language containing only the empty string.
+2. For any character `c`, the string `c` is a regular expression that describes the language containing only the string `c`.
+3. If `r1` and `r2` are regular expressions, then the *concatenation* `r1r2` is a regular expression that describes the language containing all strings formed by concatenating a string from the language described by `r1` with a string from the language described by `r2`.
+4. If `r1` and `r2` are regular expressions, then the *union* `r1|r2` is a regular expression that describes the language containing all strings that are either in the language described by `r1` or in the language described by `r2`.
+5. If `r1` is a regular expression, then the *Kleene star* `r1*` is a regular expression that describes the language containing all strings that can be formed by concatenating zero or more strings from the language described by `r1`.
 
 (While denoting regular expressions, parentheses are used to group expressions, e.g., `(r1|r2)*`. Also though not in the formal definition, it is common to use `+` to denote one or more occurrences of a character or group.)
 
@@ -158,20 +161,21 @@ In order to implement a Regex engine, we can use the following approach:
 3. Use the finite automaton to match the input string against the regular expression by simulating the transitions of the automaton based on the input characters.
 
 
-== Modifications to Regex, and its Impact
+== Regular Expressions in the real world
 
-The first uses of regular expressions in practice were in the 1960s, when Ken Thompson implemented regular expressions as a way to search for patterns in text files. He used a simple regular expression engine in the Unix text editor `ed`, which later evolved into `grep`, a popular command line tool for searching text files using regular expressions.
+The first uses of regular expressions in practice were in the 1960s, when Ken Thompson implemented regular expressions as a way to search for patterns in text files. He wrote a simple regular expression engine for the Unix text editor `ed`, which later evolved into `grep`, a popular command line tool for searching text files using regular expressions.
 
-As they became more popular, different variants of regexes were developed, each with its own syntax and features. Some of the common features that regexes in practice support are:
+As they became more popular, different variants of regexes were developed, each with its own syntax and features. Some of the common features that regex engines support are:
 
 - ```regex .``` : Matches any single character except newline. (Wildcard)
 - ```regex +``` : Matches one or more occurrences of the preceding character or group.
 - ```regex ?``` : Matches zero or one occurrence of the preceding character or group.
 - ```regex *``` : Matches zero or more occurrences of the preceding character or group.
 - ```regex \(``` : Backslashes can be used to escape characters. For example, `\(` matches the literal character `(`, and `\)` matches the literal character `)`.
-- Character classes: `[abc]` matches characters 'a', 'b' or 'c'; `[a-z]` matches any lowercase character, `[A-Za-z0-9]` matches any alphanumeric character. `[^pqr]` is a negated character class, which matches any character other than the ones in the class.
-- Numeric Quantifiers: `{m}` matches exactly `m` occurences of the preceding element. `{m,n}` matches at least `m` and at most `n` occurences of the preceding element.
+- Character classes: ```regex [abc]``` matches characters 'a', 'b' or 'c'; ```regex [a-z]``` matches any lowercase character, ```regex [A-Za-z0-9]``` matches any alphanumeric character. ```regex [^pqr]``` is a negated character class, which matches any character other than the ones in the class.
+- Numeric Quantifiers: ```regex {m}``` matches exactly `m` occurences of the preceding element. ```regex {m,n}``` matches at least `m` and at most `n` occurences of the preceding element.
 - Anchors: For search applications, `^` can be used to denote start of the file (or a line), and `$` for the end of the file (or a line).
+- Shorthand notations like ```regex \d``` denotes ```regex [0-9]```, ```regex \w``` denotes ```regex [A-Za-z0-9_]```, and ```regex \s``` denotes whitespace characters (space, tab, newline, etc.).
 
 For example,
 
@@ -179,8 +183,9 @@ For example,
 - ```regex lo+l``` matches any string starting and ending with `l`, and having a sequence of `o`s in between like `lol`, `loool`, `loooooool`.
 - ```regex \(.*\)``` matches any string starting with `(` and ending with `)`.
 - ```regex Reg(E|e)xp?``` matches the words "RegExp", "RegEx", "Regexp" and "Regex".
+- ```regex [A-Za-z0-9]+``` matches any alphanumeric string of one or more characters.
+- ```regex \d{2}-\d{2}-\d{4}``` matches a date in the format `dd-mm-yyyy`, like `01-01-2020`.
 
-// TODO Highlight new regex features and give examples.
 All these new features do make regexes more concise, but not more powerful; there exist longer equivalents in the original regex syntax that can express the same patterns.
 
 However, one common extension to regular expressions that does increase its power is the addition of *backreferences*. A backreference allows a regex to refer to a previously matched group. For example, the regex `(.*)\1` matches any string that contains a word followed by the same word again, like `hellohello`.
@@ -191,7 +196,11 @@ Most modern regex implementations support backreferences, and thus they are usua
 
 = Creating a Regex Engine
 
-Note: The full repository for the regex engine I built and that is outlined below is at http://github.com/dipamsen/regular.
+#let filelink(raw-file) = {
+  link("https://github.com/dipamsen/regular/blob/main/" + raw-file.text, raw-file)
+}
+
+Note: The full repository for the regex engine I built and that is outlined below is at https://github.com/dipamsen/regular.
 
 Let us dive into how one may create their own regular expressions engine. As mentioned earlier, the entire workflow contains three steps:
 
@@ -199,13 +208,13 @@ Let us dive into how one may create their own regular expressions engine. As men
 2. Convert the parsed regex into an D/NFA
 3. Simulate the D/NFA on the input string and check if it accepts or rejects it.
 
-The syntax we will support will include `.` (wildcard), quantifiers `+, ?, *`; `|` for union, as well as backslash escapes.
+The syntax we will support will include `.` (wildcard), quantifiers `+, ?, *` and `|` for union. This is a subset of the syntax in original regular expressions implementations in UNIX tools, but is equal in expressive power to the original regex syntax. We will not support backreferences, as they are not a part of regular expressions in the theoretical sense.
 
-This is a subset of the features in the original implementations, but notably, it does not have backreferences, which will be important later.
 
 == Parsing the Regex
 
 This is the first step in our workflow. Now there are many ways to go about this. This goes into theory of compilers, which I won't delve into in this post (mainly because I don't know much about it), but I implemented a *recursive descent* parser based on a grammar:
+
 
 ```txt
 Regex          ::= Alternation
@@ -224,7 +233,7 @@ The above block of text is a simplified version of what's called a 'Grammar', th
 
 An interesting thing to note is that the grammar is based on the precedence order of operations. The normal precedence is quantifiers have the highest precendence, then concatenation, and finally union. The symbols in the grammar are structured in a similar hierarchy (union in the outermost level, next level being concatenation, and quantifiers being applied in the next level).
 
-The complete parser data structures and code is in `parser.h` and `parser.c` - we have functions for each non-terminal symbol in the grammar, and they call each other according to the grammar rules, processing the input (i.e. the regex string) from left to right.
+The complete parser data structures and code is in #filelink(`parser.h`) and #filelink(`parser.c`) - we have functions for each non-terminal symbol in the grammar, and they call each other according to the grammar rules, processing the input (i.e. the regex string) from left to right.
 
 Let us assume that we are done with parsing, and we are left with a parse tree which represents the structure of the regular expression.
 
@@ -574,7 +583,7 @@ Furthermore, you may notice that the input string and the backtracking order is 
 
 How then, can we justify backtracking being less efficient in the worst case?
 
-Let's take a look at a different example. Look at the NFA given in @exmp (equivalent to ```regex a*b?a*c```). Let us try simulating it on the input string `aaaa`. 
+Let's take a look at a different example. Look at the NFA given in @exmp (equivalent to ```regex a*b?a*c```). Let us try simulating it on the input string `aaaa`.
 
 #figure(
   diagram(
@@ -650,7 +659,7 @@ Here's the state sets for the parallel simulation:
 
 In this case, we have to store less number of states (in total) while doing a parallel simulation. From this, we can find a time complexity bound for the parallel simulator: If we take the regex/NFA to be constant, and the length of the input to be $n$, then the parallel matching algorithm is order $O(n)$, since at each step it does at most constant work. (If the NFA has $m$ states, the active set will at most be holding $m$ states at once, which is a constant.)
 
-This is true, even if the number of valid paths through the NFA grows exponentially or polynomially (as is the case here). The key idea is this: *If the input string has some prefix which the NFA can match in more than one way, the backtracker explores each of these paths separately. On the other hand, the parallel simulator will merge them into a single path and only visit its subtree once.* This is inherent in its design; the active set cannot contain duplicate states.
+This is true, even if the number of valid paths through the NFA grows exponentially or polynomially (as is the case here). The key idea is this: *If the input string has some prefix which the NFA can match in more than one way, the backtracker explores each of these paths separately. On the other hand, the parallel simulator will merge them into a single path and only explore its subtree once.* This is inherent in its design; the active set cannot contain duplicate states.
 
 This means that even if the number of valid paths grows nonlinearly, the parallel simulator avoids redundant work by collapsing equivalent states — ensuring linear time behavior.
 
@@ -660,16 +669,18 @@ In fact, most regex implementations in modern programming languages use backtrac
 
 You can try this on your own: Open any web browser, open its JavaScript console, and copy and paste the code below, and see the results for yourselves. (after running the code, wait a few seconds for the output to appear)
 
-```js
-console.time();
-/(a|aa)*b/.test("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-console.timeEnd();
-```
+#zebraw(
+  ```js
+  console.time();
+  /(a|aa)*b/.test("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+  console.timeEnd();
+  ```,
+)
 
 (Warning: If you increase the input string length more, it might hang your PC and even crash your browser!)
 
 
-If you are thinking that this can be exploited as a security vulnerability; by making a program run a particular regex on some carefully chosen input, one could crash the program - you'd be right! This is a real security attack, known as *ReDoS* - *Regular Expression Denial of Service* attack. (See here for a list of some vulnerabilities found in real world applications: https://github.com/engn33r/awesome-redos-security?tab=readme-ov-file#redos-cves)
+If you are thinking that this can be exploited as a security vulnerability; by making a program run a particular regex on some carefully chosen input, one could crash the program - you'd be right! This is a real security attack, known as *ReDoS* - *Regular Expression Denial of Service* attack. (See here for a list of some vulnerabilities found in real world applications: #link("https://github.com/engn33r/awesome-redos-security?tab=readme-ov-file#redos-cves")[ReDoS CVEs])
 
 Fortunately, this is something we don't have to worry about. We will use parallel simulation for our regex engine, so it won't be vulnerable to catastrophic backtracking. Furthermore, it will be able to handle way longer strings in this example, than the one where JavaScript struggles to find the answer!
 
@@ -677,7 +688,7 @@ At this point, we have understood the theory behind constructing an NFA and simu
 
 == Implementation Details
 
-This section specifically my implementation of the above ideas in C. This implementation is heavily inspired by Russ Cox's implementation, which in turn is based on Ken Thompson's original Regex engine which compiled the regular expression into machine code.
+This section discusses my implementation of the above ideas in C. This implementation is heavily inspired by Russ Cox's implementation, which in turn is based on Ken Thompson's original Regex engine which compiled the regular expression into machine code.
 
 === NFA Construction
 
@@ -769,187 +780,249 @@ Firstly, the partial NFAs we will create will not have end states, instead they 
   ))
 }
 #figure(
-  grid(
-    columns: 2 * (1fr,),
-    align: center,
-    row-gutter: (10pt, 30pt) * 7,
-    constructions.at("c"),
-    constructions.at("."),
-    [(a) A single character (`c`)],
-    [(b) Wildcard (`.`)],
+  custom-css(
+    table(
+      stroke: none,
+      inset: 0pt,
+      columns: 2 * (1fr,),
+      align: center,
+      row-gutter: (10pt, 30pt) * 7,
+      constructions.at("c"),
+      constructions.at("."),
+      [(a) A single character (`c`)],
+      [(b) Wildcard (`.`)],
 
-    constructions.at("*"),
-    constructions.at("+"),
-    [(c) Zero or more times (`r*`)],
-    [(d) One or more times (`r+`)],
+      constructions.at("*"),
+      constructions.at("+"),
+      [(c) Zero or more times (`r*`)],
+      [(d) One or more times (`r+`)],
 
-    grid.cell(constructions.at("?"), colspan: 2),
-    grid.cell(colspan: 2)[(e) Optional (`r?`)],
+      table.cell(constructions.at("?"), colspan: 2),
+      table.cell(colspan: 2)[(e) Optional (`r?`)],
 
-    grid.cell(constructions.at("|"), colspan: 2),
-    grid.cell(colspan: 2)[(f) Union (`r1|r2`)],
+      table.cell(constructions.at("|"), colspan: 2),
+      table.cell(colspan: 2)[(f) Union (`r1|r2`)],
 
-    grid.cell(constructions.at("-"), colspan: 2),
-    grid.cell(colspan: 2)[(g) Concatenation (`r1r2`)],
+      table.cell(constructions.at("-"), colspan: 2),
+      table.cell(colspan: 2)[(g) Concatenation (`r1r2`)],
+    ),
+    ```css
+      & td {
+        text-align: center;
+      }
+      & table {
+        border-spacing: 40px 10px;
+      }
+    ```.text,
   ),
   caption: [Different constructions of partial NFAs],
   kind: image,
+  placement: top,
 ) <constructs>
 
 @constructs shows the partial NFAs for different operations that we may find in the regex string. Here, "S" denotes the start state of the partial NFA, and a dashed arrow represents the outgoing dangling pointer. Blocks labelled as $N(r)$ represent the partial NFAs corresponding to the subexprssions; they have their own start state, and an outgoing dangling pointer. A double arrow ($==>$) represents patching, i.e. connecting the dangling pointer to a state.
 
 Now, if we follow the above construction, we can restrict our states to be of specific forms, rather than any general NFA state. Every state that the construction creates can be classified as one of the following types (correspondingly colored in the figure):
 
-- #text(green, weight: "bold")[Character State]: A state with a single outgoing transition, which can be followed when the character is `c`.
-- #text(red.lighten(20%), weight: "bold")[Wildcard State]: A state with a single outgoing transition, which can be followed upon reading any character.
-- #text(purple.lighten(20%), weight: "bold")[Split State]: A state with two outgoing transitions, both of them being epsilon transitions.
-- #text(yellow.darken(30%), weight: "bold")[Epsilon State]: A state with one outgoing epsilon transition.
+- #strong(text(green)[Character State]) (green): A state with a single outgoing transition, which can be followed when the character is `c`.
+- #strong(text(red.lighten(20%))[Wildcard State]) (red): A state with a single outgoing transition, which can be followed upon reading any character.
+- #strong(text(purple.lighten(20%))[Split State]) (purple): A state with two outgoing transitions, both of them being epsilon transitions.
+- #strong(text(yellow.darken(30%))[Epsilon State]) (yellow): A state with one outgoing epsilon transition.
 
-What does this mean for our C implementation? This means that every state will have at most 2 outgoing transitions, and further, the state itself can hold its transitions - we won't need separate data structures for storing states and transitions. Here are the data structures that we will define for the construction (`construction.h`):
+What does this mean for our C implementation? This means that every state will have at most 2 outgoing transitions, and further, the state itself can hold its transitions - we won't need separate data structures for storing states and transitions. Here are the data structures that we will define for the construction (#filelink(`construction.h`)):
 
-```c
-#define EPSILON 256
-#define SPLIT 257
-#define MATCH 258
-#define DOT 259
+#zebraw(
+  ```c
+  #define EPSILON 256
+  #define SPLIT 257
+  #define MATCH 258
+  #define DOT 259
 
-typedef struct State {
-    int ch;
-    struct State *out;
-    struct State *out1;
-} State;
+  typedef struct State {
+      int ch;
+      struct State *out;
+      struct State *out1;
+  } State;
 
-typedef struct Fragment {
-    struct State *start;
-    struct State **out;
-} Fragment;
-```
+  typedef struct Fragment {
+      struct State *start;
+      struct State **out;
+  } Fragment;
+  ```,
+)
 
 Here, the `State` struct corresponds to a state in the NFA, and `ch` stores a character (0-255) if it is a character state, or constants corresponding to the type of state. We have defined one more convinence state type `MATCH`, which we can patch onto the complete partial NFA, so that it can be used to check whether the NFA accepts or rejects the input string. The `State` also holds two State pointers, corresponding to its transitions.
 
 We have one more struct called `Fragment`: This represents any general partial NFA. What it stores is its start state, as well the dangling out pointer of the partial NFA. Essentially, the way it works is that it is a double pointer which points to `State.out`, which will be `NULL`, and when we want to patch it, we will do
 
-```c
-void patch(State **out, State *target) {
-    *out = target;
-}
+#zebraw(
+  ```c
+  void patch(State **out, State *target) {
+      *out = target;
+  }
 
-patch(frag.out, some_state)
-```
+  patch(frag.out, some_state)
+  ```,
+)
 
 and this will ensure to make the correct connections within states internally (It will connect the state having the dangling pointer to `some_state`).
 
-Now all thats left to do is to implement different functions for each construction in @constructs, and connect them together according to the structure of the input regex (that we have already parsed). The complete code is in `construction.c`, here are some of the constructions, modified for clarity.
+Now all thats left to do is to implement different functions for each construction in @constructs, and connect them together according to the structure of the input regex (that we have already parsed). The complete code is in #filelink(`construction.c`), here are some of the constructions, modified for clarity.
 
-```c
-Fragment zero_or_more(Fragment frag) {
-	State *loop = new_state(SPLIT, frag.start, NULL);
-	patch(frag.out, loop);
-	return (Fragment){loop, &loop->out1};
-}
+#zebraw(
+  ```c
+  Fragment zero_or_more(Fragment frag) {
+  	State *loop = new_state(SPLIT, frag.start, NULL);
+  	patch(frag.out, loop);
+  	return (Fragment){loop, &loop->out1};
+  }
 
-Fragment one_or_more(Fragment frag) {
-	State *loop = new_state(SPLIT, frag.start, NULL);
-	patch(frag.out, loop);
-	return (Fragment){frag.start, &loop->out1};
-}
+  Fragment one_or_more(Fragment frag) {
+  	State *loop = new_state(SPLIT, frag.start, NULL);
+  	patch(frag.out, loop);
+  	return (Fragment){frag.start, &loop->out1};
+  }
 
-Fragment optional(Fragment frag) {
-	State *new_end = new_state(EPSILON, NULL, NULL);
-	State *new_start = new_state(SPLIT, frag.start, new_end);
-	patch(frag.out, new_end);
-	return (Fragment){new_start, &new_end->out};
-}
+  Fragment optional(Fragment frag) {
+  	State *new_end = new_state(EPSILON, NULL, NULL);
+  	State *new_start = new_state(SPLIT, frag.start, new_end);
+  	patch(frag.out, new_end);
+  	return (Fragment){new_start, &new_end->out};
+  }
+  ```,
+)
 
-```
-
-== Matching on an input
+=== Matching on an input
 
 Now, the time has come to simulate the NFA on a given input string. From the extensive discussion on this topic, we know that we will simulate the NFA in parallel, keeping track of all states that the NFA could be in at a certain step.
 
 Data structuring is pretty easy, we just need a list of states:
 
-```c
-typedef struct StateList {
-    State *states[MAX_STATES];
-    int count;
-} StateList;
-```
+#zebraw(
+  ```c
+  typedef struct StateList {
+      State *states[MAX_STATES];
+      int count;
+  } StateList;
+  ```,
+)
 
 (Here, we are not using a Set data structure which would be more efficient, yet our algorithm is still linear time since our state list can only ever have at most a constant number of states.)
 
 Before writing the actual match function, we define some helper functions:
 
-```c
-void add_state(StateList *list, State *s) {
-  if (s == NULL)
-    return;
-  for (int i = 0; i < list->count; i++) {
-  	// do not add duplicates
-    if (list->states[i] == s)
+#zebraw(
+  ```c
+  void add_state(StateList *list, State *s) {
+    if (s == NULL)
       return;
+    for (int i = 0; i < list->count; i++) {
+    	// do not add duplicates
+      if (list->states[i] == s)
+        return;
+    }
+    if (s->ch == SPLIT || s->ch == EPSILON) {
+      add_state(list, s->out);
+      add_state(list, s->out1);
+    } else {
+      list->states[list->count++] = s;
+    }
   }
-  if (s->ch == SPLIT || s->ch == EPSILON) {
-    add_state(list, s->out);
-    add_state(list, s->out1);
-  } else {
-    list->states[list->count++] = s;
-  }
-}
-```
+  ```,
+)
 
 `add_state()` adds the given state to the state list, or if its a state with epsilon transitions, the states that can be reached from the given state via epsilon transitions. (Due to the restricted structure of our NFA, we don't need to add the state itself in this case).
 
 
-```c
-void step(StateList *current, int ch, StateList *next) {
-  next->count = 0;
-  for (int i = 0; i < current->count; i++) {
-    State *s = current->states[i];
-    // for every state s in the current state list
-    if (s->ch == DOT || s->ch == ch) {
-    	// add the states which can be reached by reading ch
-    	add_state(next, s->out);
+#zebraw(
+  ```c
+  void step(StateList *current, int ch, StateList *next) {
+    next->count = 0;
+    for (int i = 0; i < current->count; i++) {
+      State *s = current->states[i];
+      // for every state s in the current state list
+      if (s->ch == DOT || s->ch == ch) {
+      	// add the states which can be reached by reading ch
+      	add_state(next, s->out);
+      }
     }
   }
-}
-```
+  ```,
+)
 
 `step()` is the function that reads the next character from the input, and creates the new state list, based on the current state list.
 
-```c
-int is_match(StateList *current) {
-  for (int i = 0; i < current->count; i++) {
-    if (current->states[i]->ch == MATCH)
-      return 1;
+#zebraw(
+  ```c
+  int is_match(StateList *current) {
+    for (int i = 0; i < current->count; i++) {
+      if (current->states[i]->ch == MATCH)
+        return 1;
+    }
+    return 0;
   }
-  return 0;
-}
-```
+  ```,
+)
 
 This is very self-explanatory, it checks if the current state list has the `MATCH` state, which indicates success.
 
 Finally, here's the `match` function in all its glory:
 
-```c
-int match(State *start, char *input) {
-    StateList current;
-    StateList next;
-    current.count = 0;
-    next.count = 0;
+#zebraw(
+  ```c
+  int match(State *start, char *input) {
+      StateList current;
+      StateList next;
+      current.count = 0;
+      next.count = 0;
 
-    add_state(&current, start);
+      add_state(&current, start);
 
-    for (; *input; input++) {
-        step(&current, *input, &next);
-        // swap current and next
-        StateList temp = current;
-        current = next;
-        next = temp;
-    }
+      for (; *input; input++) {
+          step(&current, *input, &next);
+          // swap current and next
+          StateList temp = current;
+          current = next;
+          next = temp;
+      }
 
-    return is_match(&current);
-}
-```
+      return is_match(&current);
+  }
+  ```,
+)
 
-For completeness, what this function does is maintains two state lists - `current` and `next`. It adds the start state into the `current` list, then construct the `next` list by reading the next character from the input. Then, it swaps the two lists and continues doing so until the end of input is reached. At this point, we return true if the `MATCH` state is present in the current state list.
+What this function does is maintains two state lists - `current` and `next`. It adds the start state into the `current` list, then construct the `next` list by reading the next character from the input. Then, it swaps the two lists and continues doing so until the end of input is reached. At this point, we return true if the `MATCH` state is present in the current state list.
+
+Alright, we have now implemented the regex engine! You can visit the #link("https://github.com/dipamsen/regular")[repo], and you can run it with the command `make all` and `./main`. One of the test cases it runs is
+
+#zebraw(
+  ```c
+  test("(a|aa)*b", "aaaaaaaaaaaaaaaa...aaaaaaaaaa", false);
+  ```,
+)
+
+which is an input string 230 characters long (removed here for brevity) #sym.dash way longer than the one JS was struggling with #sym.dash and it runs in less than a second!
+
+= Conclusion
+
+In this post, we have discussed some history, theory and implementation of a regex engine. We have seen how to construct an NFA from a regex, and how to simulate it in parallel on an input string. We also saw how this approach avoids catastrophic backtracking, and is thus more efficient than the backtracking approach.
+
+As a final note, I would like to mention that though the backtracking approach is vulnerable to catastrophic backtracking, it is still used in most modern regex engines. This approach provides much greater flexibility and expressive power, allowing more complex regex extensions. On the other hand, using a parallel simulation avoids this entirely, there are no 'pathological' inputs that can cause the engine to hang or crash. But it can only express traditional regular languages.
+
+If you are interested in learning more about regex engines, do check out the resources in the References below.
+
+= References
+
+- Russ Cox - #link("https://swtch.com/~rsc/regexp/")[Implementing Regular Expressions]: An amazing series of articles on history and implementation of regex engines.
+  - #link("https://swtch.com/~rsc/regexp/regexp1.html")[Regular Expression Matching Can Be Simple and Fast]
+
+- #link("https://youtu.be/ENKT0Z3gldE")[Grammars, parsing and recursive descent] by Kay Lack
+- #link("https://youtu.be/gITmP0IWff0")[How regexes got catastrophic] by Kay Lack
+
+- Relevant Wikipedia articles:
+  - #link("https://en.wikipedia.org/wiki/Regular_expression")[Regular Expression]
+  - #link("https://en.wikipedia.org/wiki/Thompson's_construction")[Thompson's Construction]
+  - #link("https://en.wikipedia.org/wiki/Nondeterministic_finite_automaton")[Nondeterministic Finite Automaton]
+  - #link("https://en.wikipedia.org/wiki/ReDoS")[ReDoS]
+
+- Introduction to the Theory of Computation by Michael Sipser, Chapter 1: Regular Languages
