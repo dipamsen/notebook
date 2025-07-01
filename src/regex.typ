@@ -720,7 +720,7 @@ Firstly, the partial NFAs we will create will not have end states, instead they 
     node((1, 0), radius: 12pt, fill: white),
     node(enclose: ((1, 0), (2, 0)), snap: false, corner-radius: 4pt, stroke: (dash: "dotted"), fill: blue.lighten(50%)),
     node((1.6, 0), stroke: none, $N(r)$),
-    edge((2, 0), (3, 0), eps, "=>"),
+    edge((2, 0), (3, 0), "=>"),
     node((3, 0), radius: 12pt, fill: yellow.lighten(10%), stroke: yellow.darken(20%)),
     edge((0, 0), (3, 0), bend: -40deg, eps, "-|>", label-side: left),
     edge((3, 0), (4, 0), "--|>", eps),
@@ -733,7 +733,7 @@ Firstly, the partial NFAs we will create will not have end states, instead they 
     node((1, 0), radius: 12pt, fill: white),
     node(enclose: ((1, 0), (2, 0)), snap: false, corner-radius: 4pt, stroke: (dash: "dotted"), fill: blue.lighten(50%)),
     node((1.6, 0), stroke: none, $N(r)$),
-    edge((2, 0), (2.5, 0), (2.5, -0.5), (0, -0.5), (0, 0), eps, "=>"),
+    edge((2, 0), (2.5, 0), (2.5, -0.5), (0, -0.5), (0, 0), "=>"),
     edge((0, 0), (3, 0), bend: -40deg, eps, "--|>", label-side: left, label-sep: 2pt),
   ))
 
@@ -742,7 +742,7 @@ Firstly, the partial NFAs we will create will not have end states, instead they 
     node((1, 0), "S", radius: 12pt, fill: white),
     node(enclose: ((1, 0), (2, 0)), snap: false, corner-radius: 4pt, stroke: (dash: "dotted"), fill: blue.lighten(50%)),
     node((1.6, 0), stroke: none, $N(r)$),
-    edge((2, 0), (3, 0), eps, "=>"),
+    edge((2, 0), (3, 0), "=>"),
     node((3, 0), radius: 12pt, fill: purple.lighten(50%), stroke: purple),
     edge((3, 0), (4, 0), eps, "--|>"),
     edge((3, 0), (1, 0), bend: 40deg, eps, "-|>", label-sep: 0pt),
@@ -753,11 +753,11 @@ Firstly, the partial NFAs we will create will not have end states, instead they 
     node((1, 0), "S", radius: 12pt, fill: white),
     node(enclose: ((1, 0), (2, 0)), snap: false, corner-radius: 4pt, stroke: (dash: "dotted"), fill: blue.lighten(50%)),
     node((1.6, 0), stroke: none, $N(r_1)$),
-    edge((2, 0), (3, 0), eps, "=>"),
+    edge((2, 0), (3, 0), "=>"),
     node((3, 0), radius: 12pt, fill: white),
     node(enclose: ((3, 0), (4, 0)), snap: false, corner-radius: 4pt, stroke: (dash: "dotted"), fill: blue.lighten(50%)),
     node((3.6, 0), stroke: none, $N(r_2)$),
-    edge((4, 0), (5, 0), eps, "--|>"),
+    edge((4, 0), (5, 0), "--|>"),
   ))
 
 
@@ -776,8 +776,8 @@ Firstly, the partial NFAs we will create will not have end states, instead they 
     node((1.6, 1), stroke: none, $N(r_2)$),
     node((3, 0.5), radius: 12pt, fill: yellow.lighten(10%), stroke: yellow.darken(20%)),
 
-    edge((2, 0), (3, 0.5), "=>", eps),
-    edge((2, 1), (3, 0.5), "=>", eps),
+    edge((2, 0), (3, 0.5), "=>"),
+    edge((2, 1), (3, 0.5), "=>"),
     edge((3, 0.5), (4, 0.5), "--|>", eps),
   ))
 }
