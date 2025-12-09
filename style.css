@@ -3,16 +3,16 @@
   padding: 0;
   box-sizing: border-box;
 
-  color-scheme: light dark;
-
-  --color-green: #1db66c;
+  color-scheme: dark;
+  --color-green: #49be86;
+  --color-accent: #77d9aa;
   --color-dark-green: #157a49;
 }
 
 body {
-  font-family: "Figtree", sans-serif;
-  background-color: #f9f6f9;
-  color: #100a10;
+  font-family: "Open Sans", sans-serif;
+  background-color: #090609;
+  color: #878787;
 
   font-size: 18px;
 
@@ -21,22 +21,18 @@ body {
   min-height: 100vh;
 }
 
-[data-theme="dark"] body {
-  background-color: #090609;
-  color: #f5eff5;
-}
-
 main {
-  max-width: 1000px;
+  /* max-width: 1000px; */
   margin: 2rem auto;
-  padding: 0 1rem;
+  padding: 0 3rem;
   flex: 1;
 }
 
 h1 {
   font-size: 1.5rem;
   margin-bottom: 1rem;
-  font-weight: 650;
+  font-weight: normal;
+  color: #f9f6f9;
 }
 
 .posts {
@@ -44,16 +40,9 @@ h1 {
 }
 
 .post {
-  /* background-color: #fff; */
-  /* padding: 1rem; */
-  margin-bottom: 2rem;
+  margin-bottom: 4rem;
   border-radius: 5px;
   display: flex;
-}
-
-[data-theme="dark"] .post {
-  /* background-color: #1e1e1e; */
-  color: #f9f6f9;
 }
 
 .post .info {
@@ -62,51 +51,39 @@ h1 {
 
 .post .details {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
   margin-bottom: 1rem;
-}
-
-@media (max-width: 600px) {
-  .post .details {
-    flex-direction: column;
-    gap: 0.5rem;
-    align-items: flex-start;
-  }
-}
-
-.post::before {
-  content: "-";
-  display: block;
-  margin-right: 1rem;
-  font-size: 1.3rem;
+  gap: 1rem;
 }
 
 h2 {
   font-size: 1.3rem;
-  color: var(--color-dark-green);
-  font-weight: 600;
+  color: var(--color-green);
+  font-weight: normal;
   flex: 1;
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 0.5rem;
+
+  & a:hover {
+    color: var(--color-accent);
+  }
 }
 
 .post .details .date {
   font-size: 0.9rem;
-  color: #757575;
 }
 
 a {
-  color: inherit;
+  color: var(--color-green);
   text-decoration: none;
 }
 
-[data-theme="dark"] a {
-  color: var(--color-green);
-}
 
 footer {
-  background-color: #dedcde;
-  padding: 1rem;
+  padding: 1rem 2rem;
   width: 100%;
+  margin: 1rem 0;
 
   & .contain {
     margin: 0 auto;
@@ -117,21 +94,19 @@ footer {
   }
 
   & a {
-    color: #545454;
+    color: #545454
+  }
+
+  & a:hover {
+    color: #878787;
   }
 }
 
-[data-theme="dark"] footer {
-  background-color: #1e1e1e;
-
-  & a {
-    color: #f9f6f9;
-  }
-}
-
-pre {
+footer span {
+  display: flex;
+  gap: 1rem;
   font-family: "Azeret Mono", monospace;
-  font-weight: 600;
+  font-weight: normal;
   font-size: 1rem;
 }
 
@@ -146,59 +121,27 @@ pre {
 }
 
 .icon {
-  width: 1em;
-  height: 1em;
+  width: 0.8em;
   vertical-align: -0.125em;
   color: inherit;
 }
 
+.github-icon {
+  width: 1.2em;
+}
+
 .pdf {
-  margin-left: 1em;
-}
+  color: #878787;
 
-/* Hide default checkbox */
-.theme-switch {
-  position: absolute;
-  opacity: 0;
-}
+  & span {
+    text-transform: uppercase;
+    font-size: 0.7em;
+    margin-left: 0.5em;
+  }
 
-/* Custom toggle switch */
-.theme-switch-label {
-  display: inline-block;
-  width: 50px;
-  height: 26px;
-  background: #ccc;
-  border-radius: 50px;
-  position: relative;
-  cursor: pointer;
-  transition: background 0.3s;
-}
-
-/* Switch knob */
-.theme-switch-label::after {
-  content: "☀️";
-  font-size: 11pt;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: absolute;
-  width: 22px;
-  height: 22px;
-  background: white;
-  border-radius: 50%;
-  top: 2px;
-  left: 2px;
-  transition: transform 0.3s;
-}
-
-/* When checked (dark mode) */
-.theme-switch:checked + .theme-switch-label {
-  background: #222;
-}
-
-.theme-switch:checked + .theme-switch-label::after {
-  transform: translateX(24px);
-  content: "🌙";
+  &:hover {
+    color: #f9f6f9
+  }
 }
 
 header {
@@ -206,35 +149,17 @@ header {
   justify-content: space-between;
 }
 
-footer a.typst {
-  color: #14aac0;
-  font-weight: 700;
+a.typst {
+  color: #888;
 }
 
-[data-theme="dark"] footer a.typst {
-  color: #14aac0;
-  font-weight: 700;
+a.typst:hover {
+  color: #cbcbcb;
 }
 
-[data-theme="dark"] {
-  & .dark {
-    display: block;
-  }
-
-  & .light {
-    display: none;
-  }
-
-  & .declare {
-    color: #ababab;
-  }
-
-  & h2 {
-    color: var(--color-green);
-  }
-}
-
-.theme-switch,
-.theme-switch-label {
-  display: none;
+hr {
+  border: none;
+  height: 1px;
+  background-color: #222222;
+  margin: 2rem 0;
 }

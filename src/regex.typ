@@ -1,7 +1,7 @@
-#import "../template.typ": blog-post, custom-css, diagram, hscroll, polyfill-html
+#import "../template.typ": blog-post, custom-css, diagram, hscroll, polyfill-html, output-format
 #import "@preview/cetz:0.4.0"
 #import "@preview/fletcher:0.5.8" as fletcher: edge, node
-#import "@preview/zebraw:0.5.5": zebraw
+#import "@preview/zebraw:0.6.1": zebraw
 
 #show: blog-post.with(title: "Regular Expressions: From theory to practice", date: datetime(
   day: 30,
@@ -9,7 +9,7 @@
   year: 2025,
 ))
 
-#show raw.where(lang: "regex"): polyfill-html(block: false)
+#show raw.where(lang: "regex"): polyfill-html(block: false, fix-color: false)
 
 #show raw.where(lang: "regex"): it => {
   show regex(`\\.`.text): box.with(fill: luma(120).lighten(60%), outset: (x: 0.3pt, y: 2pt))
@@ -22,6 +22,10 @@
 }
 
 #show link: set text(blue)
+
+#let th(col) = if output-format == "html" { col.darken(40%) } else { col }
+#let b(it) = text(black, it)
+#let bgcolor = if output-format == "html" { rgb("#090609") } else { white } 
 
 
 Regular expressions are a powerful tool for searching and manipulating text. They allow us to define patterns that can match specific sequences of characters. They find their use in most modern programming languages, text editors and command line tools. Let's explore them in a bit more detail.
@@ -244,20 +248,20 @@ Let us assume that we are done with parsing, and we are left with a parse tree w
 ```
 
 
-#let grp2(it) = box(fill: green.lighten(20%), radius: 2pt, grid(
+#let grp2(it) = box(fill: th(green).lighten(20%), radius: 2pt, grid(
   columns: 2,
   box(it, inset: (x: 4pt, y: 6pt), stroke: (right: white)), box(inset: (x: 6pt, y: 6pt))[#set text(1.2em);`*`],
 ))
-#let grp(it, color: red) = box(fill: color.lighten(30%), radius: 2pt, box(it, inset: (x: 4pt, y: 7pt)))
+#let grp(it, color: th(red)) = box(fill: color.lighten(30%), radius: 2pt, box(it, inset: (x: 4pt, y: 7pt)))
 
 #figure(
   diagram(
     node((0, -0.7), {
-      set text(1.4em)
+      set text(1.4em, black)
       re
     }),
     edge(),
-    node((0, 0), grp(color: purple)[Concat]),
+    node((0, 0), grp(color: th(purple))[Concat]),
     edge((0, 0), (-1, 0.8)),
     node((-1, 0.8), grp2[Group], snap: false),
     edge((0, 0), (-0.3, 0.8)),
@@ -272,7 +276,7 @@ Let us assume that we are done with parsing, and we are left with a parse tree w
     node((0.3, 1.3), [0], stroke: 1pt, corner-radius: 10pt, width: 20pt, height: 20pt),
 
     edge((-1, 0.8), (-1, 1.5)),
-    node((-1, 1.5), grp(color: blue)[Union], snap: false),
+    node((-1, 1.5), grp(color: th(blue))[Union], snap: false),
     edge((-1, 1.5), (-1.3, 2)),
     node((-1.3, 2), grp[Atom], snap: false),
     edge((-1.3, 2), (-1.3, 2.4)),
@@ -283,7 +287,7 @@ Let us assume that we are done with parsing, and we are left with a parse tree w
     node((-0.7, 2.5), [1], stroke: 1pt, corner-radius: 10pt, width: 20pt, height: 20pt),
 
     edge((1, 0.8), (1, 1.5)),
-    node((1, 1.5), grp(color: blue)[Union], snap: false),
+    node((1, 1.5), grp(color: th(blue))[Union], snap: false),
     edge((1, 1.5), (1.3, 2)),
     node((1.3, 2), grp[Atom], snap: false),
     edge((1.3, 2), (1.3, 2.4)),
@@ -302,6 +306,8 @@ Let us assume that we are done with parsing, and we are left with a parse tree w
 Next, we need a general way to convert any given (parsed) regular expression, into an NFA or a DFA. One way to do this is to use a *Thompson's construction* algorithm, which constructs an NFA from a regular expression. This algorithm is described below.
 
 The idea of the algorithm is to recursively create the NFA for the subexpressions, and then combine them based on the operations in the regular expression. The algorithm defines how to construct NFAs for each atomic node in the parse tree, and how to combine them based on the operations. ($N(r)$ represents the NFA for the regular expression `r`.)
+
+#let bg = if output-format == "html" { blue.darken(20%) } else { blue.lighten(60%) }
 
 + For a character `c`:
 
@@ -323,8 +329,8 @@ The idea of the algorithm is to recursively create the NFA for the subexpression
   #diagram(
     node-stroke: 1pt,
     edge((-0.8, 0), (0, 0), "-|>"),
-    node((0, 0), radius: 12pt, fill: white),
-    node((1, 0), radius: 12pt, fill: white),
+    node((0, 0), radius: 12pt, fill: bgcolor),
+    node((1, 0), radius: 12pt, fill: bgcolor),
     node(
       enclose: (
         (0, 0),
@@ -332,13 +338,13 @@ The idea of the algorithm is to recursively create the NFA for the subexpression
       ),
       inset: 8pt,
       corner-radius: 4pt,
-      fill: blue.lighten(60%),
+      fill: bg,
       snap: false,
       $N(#`r1`)$,
     ),
     edge((1, 0), (2, 0), [#sym.epsilon], "-|>"),
-    node((2, 0), radius: 12pt, fill: white),
-    node((3, 0), radius: 12pt, fill: white),
+    node((2, 0), radius: 12pt, fill: bgcolor),
+    node((3, 0), radius: 12pt, fill: bgcolor),
     node(
       enclose: (
         (2, 0),
@@ -346,7 +352,7 @@ The idea of the algorithm is to recursively create the NFA for the subexpression
       ),
       inset: 8pt,
       corner-radius: 4pt,
-      fill: blue.lighten(60%),
+      fill: bg,
       snap: false,
       $N(#`r2`)$,
     ),
@@ -360,8 +366,8 @@ The idea of the algorithm is to recursively create the NFA for the subexpression
     node-stroke: 1pt,
     edge((-0.8, 0), (0, 0), "-|>"),
     node((0, 0), $q_0$),
-    node((1, 0.5), fill: white, radius: 12pt),
-    node((2, 0.5), fill: white, radius: 12pt),
+    node((1, 0.5), fill: bgcolor, radius: 12pt),
+    node((2, 0.5), fill: bgcolor, radius: 12pt),
     node(
       enclose: (
         (1, 0.5),
@@ -369,7 +375,7 @@ The idea of the algorithm is to recursively create the NFA for the subexpression
       ),
       inset: 8pt,
       corner-radius: 4pt,
-      fill: blue.lighten(60%),
+      fill: bg,
       snap: false,
       $N(#`r2`)$,
     ),
@@ -377,8 +383,8 @@ The idea of the algorithm is to recursively create the NFA for the subexpression
     edge((0, 0), (1, 0.5), [#sym.epsilon], "-|>", label-side: right),
     edge((0, 0), (1, -0.5), [#sym.epsilon], "-|>"),
 
-    node((1, -0.5), fill: white, radius: 12pt),
-    node((2, -0.5), fill: white, radius: 12pt),
+    node((1, -0.5), fill: bgcolor, radius: 12pt),
+    node((2, -0.5), fill: bgcolor, radius: 12pt),
     node(
       enclose: (
         (1, -0.5),
@@ -386,7 +392,7 @@ The idea of the algorithm is to recursively create the NFA for the subexpression
       ),
       inset: 8pt,
       corner-radius: 4pt,
-      fill: blue.lighten(60%),
+      fill: bg,
       snap: false,
       $N(#`r1`)$,
     ),
@@ -402,8 +408,8 @@ The idea of the algorithm is to recursively create the NFA for the subexpression
     node-stroke: 1pt,
     edge((-0.8, 0), (0, 0), "-|>"),
     node((0, 0), $q_0$),
-    node((1, 0), fill: white, radius: 12pt),
-    node((2, 0), fill: white, radius: 12pt),
+    node((1, 0), fill: bgcolor, radius: 12pt),
+    node((2, 0), fill: bgcolor, radius: 12pt),
     node(
       enclose: (
         (1, 0),
@@ -411,7 +417,7 @@ The idea of the algorithm is to recursively create the NFA for the subexpression
       ),
       inset: 8pt,
       corner-radius: 4pt,
-      fill: blue.lighten(60%),
+      fill: bg,
       snap: false,
       $N(#`r`)$,
     ),
@@ -702,23 +708,23 @@ Firstly, the partial NFAs we will create will not have end states, instead they 
 #{
   constructions.insert("c", diagram(
     node-stroke: 1pt,
-    node((0, 0), radius: 12pt, "S", fill: green.lighten(20%), stroke: green.darken(40%)),
+    node((0, 0), radius: 12pt, b("S"), fill: green.lighten(20%), stroke: green.darken(40%)),
     edge((0, 0), (1, 0), "--|>", [c]),
   ))
 
   constructions.insert(".", diagram(
     node-stroke: 1pt,
-    node((0, 0), radius: 12pt, "S", fill: red.lighten(40%), stroke: red.darken(20%)),
+    node((0, 0), radius: 12pt, b("S"), fill: red.lighten(40%), stroke: red.darken(20%)),
     edge((0, 0), (1, 0), "--|>", [any]),
   ))
 
 
   constructions.insert("?", diagram(
     node-stroke: 1pt,
-    node((0, 0), "S", fill: purple.lighten(50%), stroke: purple),
+    node((0, 0), b("S"), fill: purple.lighten(50%), stroke: purple),
     edge((0, 0), (1, 0), eps, "-|>"),
-    node((1, 0), radius: 12pt, fill: white),
-    node(enclose: ((1, 0), (2, 0)), snap: false, corner-radius: 4pt, stroke: (dash: "dotted"), fill: blue.lighten(50%)),
+    node((1, 0), radius: 12pt, fill: bgcolor),
+    node(enclose: ((1, 0), (2, 0)), snap: false, corner-radius: 4pt, stroke: (dash: "dotted"), fill: bg),
     node((1.6, 0), stroke: none, $N(r)$),
     edge((2, 0), (3, 0), "=>"),
     node((3, 0), radius: 12pt, fill: yellow.lighten(10%), stroke: yellow.darken(20%)),
@@ -728,10 +734,10 @@ Firstly, the partial NFAs we will create will not have end states, instead they 
 
   constructions.insert("*", diagram(
     node-stroke: 1pt,
-    node((0, 0), "S", fill: purple.lighten(50%), stroke: purple),
+    node((0, 0), b("S"), fill: purple.lighten(50%), stroke: purple),
     edge((0, 0), (1, 0), eps, "-|>"),
-    node((1, 0), radius: 12pt, fill: white),
-    node(enclose: ((1, 0), (2, 0)), snap: false, corner-radius: 4pt, stroke: (dash: "dotted"), fill: blue.lighten(50%)),
+    node((1, 0), radius: 12pt, fill: bgcolor),
+    node(enclose: ((1, 0), (2, 0)), snap: false, corner-radius: 4pt, stroke: (dash: "dotted"), fill: bg),
     node((1.6, 0), stroke: none, $N(r)$),
     edge((2, 0), (2.5, 0), (2.5, -0.5), (0, -0.5), (0, 0), "=>"),
     edge((0, 0), (3, 0), bend: -40deg, eps, "--|>", label-side: left, label-sep: 2pt),
@@ -739,8 +745,8 @@ Firstly, the partial NFAs we will create will not have end states, instead they 
 
   constructions.insert("+", diagram(
     node-stroke: 1pt,
-    node((1, 0), "S", radius: 12pt, fill: white),
-    node(enclose: ((1, 0), (2, 0)), snap: false, corner-radius: 4pt, stroke: (dash: "dotted"), fill: blue.lighten(50%)),
+    node((1, 0), b("S"), radius: 12pt, fill: bgcolor),
+    node(enclose: ((1, 0), (2, 0)), snap: false, corner-radius: 4pt, stroke: (dash: "dotted"), fill: bg),
     node((1.6, 0), stroke: none, $N(r)$),
     edge((2, 0), (3, 0), "=>"),
     node((3, 0), radius: 12pt, fill: purple.lighten(50%), stroke: purple),
@@ -750,12 +756,12 @@ Firstly, the partial NFAs we will create will not have end states, instead they 
 
   constructions.insert("-", diagram(
     node-stroke: 1pt,
-    node((1, 0), "S", radius: 12pt, fill: white),
-    node(enclose: ((1, 0), (2, 0)), snap: false, corner-radius: 4pt, stroke: (dash: "dotted"), fill: blue.lighten(50%)),
+    node((1, 0), "S", radius: 12pt, fill: bgcolor),
+    node(enclose: ((1, 0), (2, 0)), snap: false, corner-radius: 4pt, stroke: (dash: "dotted"), fill: bg),
     node((1.6, 0), stroke: none, $N(r_1)$),
     edge((2, 0), (3, 0), "=>"),
-    node((3, 0), radius: 12pt, fill: white),
-    node(enclose: ((3, 0), (4, 0)), snap: false, corner-radius: 4pt, stroke: (dash: "dotted"), fill: blue.lighten(50%)),
+    node((3, 0), radius: 12pt, fill: bgcolor),
+    node(enclose: ((3, 0), (4, 0)), snap: false, corner-radius: 4pt, stroke: (dash: "dotted"), fill: bg),
     node((3.6, 0), stroke: none, $N(r_2)$),
     edge((4, 0), (5, 0), "--|>"),
   ))
@@ -764,15 +770,15 @@ Firstly, the partial NFAs we will create will not have end states, instead they 
   constructions.insert("|", diagram(
     node-stroke: 1pt,
     spacing: (3em, 2em),
-    node((0, 0.5), "S", fill: purple.lighten(50%), stroke: purple),
+    node((0, 0.5), b("S"), fill: purple.lighten(50%), stroke: purple),
     edge((0, 0.5), (1, 0), eps, "-|>"),
     edge((0, 0.5), (1, 1), eps, "-|>"),
-    node((1, 0), radius: 12pt, fill: white),
-    node(enclose: ((1, 0), (2, 0)), snap: false, corner-radius: 4pt, stroke: (dash: "dotted"), fill: blue.lighten(50%)),
+    node((1, 0), radius: 12pt, fill: bgcolor),
+    node(enclose: ((1, 0), (2, 0)), snap: false, corner-radius: 4pt, stroke: (dash: "dotted"), fill: bg),
     node((1.6, 0), stroke: none, $N(r_1)$),
     //edge((2, 0), (3, 0), eps, "=>"),
-    node((1, 1), radius: 12pt, fill: white),
-    node(enclose: ((1, 1), (2, 1)), snap: false, corner-radius: 4pt, stroke: (dash: "dotted"), fill: blue.lighten(50%)),
+    node((1, 1), radius: 12pt, fill: bgcolor),
+    node(enclose: ((1, 1), (2, 1)), snap: false, corner-radius: 4pt, stroke: (dash: "dotted"), fill: bg),
     node((1.6, 1), stroke: none, $N(r_2)$),
     node((3, 0.5), radius: 12pt, fill: yellow.lighten(10%), stroke: yellow.darken(20%)),
 

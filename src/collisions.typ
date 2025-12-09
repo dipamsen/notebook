@@ -3,7 +3,6 @@
 
 #show: blog-post.with(title: "Elastic Collisions", date: datetime(day: 31, month: 5, year: 2024))
 
-
 During collision of two spherical masses, the total momentum of the system remains conserved, owing to the lack of any external force present on the system. #footnote[Even if any other force is present, it can be neglected in comparison to the force of collision, which is very large, as it causes a finite change in momentum in infinitesimal time.] Different types of collision are distinguished based on
 whether or not they conserve *kinetic energy*.
 

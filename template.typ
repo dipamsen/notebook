@@ -1,41 +1,37 @@
 #import "@preview/cetz:0.4.0"
-#import "@preview/zebraw:0.5.5": zebraw
+#import "@preview/zebraw:0.6.1": zebraw-init
 #import "@preview/fletcher:0.5.8"
 
 #let output-format = sys.inputs.at("fmt")
 
-#let theme = state("light")
 #let div-frame(content, attrs: (:)) = html.elem("div", html.frame(content), attrs: attrs)
 #let span-frame(content, attrs: (:)) = html.elem("span", html.frame(content), attrs: attrs)
 
 #let boxed(body) = context block(
-  stroke: if output-format == "html" and theme.get() == "dark" { white } else { black },
+  stroke: if output-format == "html" { white } else { black },
   inset: 1em,
   body,
 )
 
 #let canvas(body, ..args) = context {
   if target() == "html" {
-    (
-      div-frame(
-        {
-          set text(fill: white)
-          cetz.canvas(
-            {
-              cetz.draw.set-style(stroke: (paint: white))
-            }
-              + body,
-            ..args,
-          )
-        },
-        attrs: ("class": "dark frame-block"),
-      )
-        + div-frame(cetz.canvas(body, ..args), attrs: ("class": "light frame-block"))
+    div-frame(
+      {
+        // set text(fill: white)
+        cetz.canvas(
+          {
+            // cetz.draw.set-style(stroke: (paint: white))
+          }
+            + body,
+          ..args,
+        )
+      },
+      attrs: ("class": "frame-block"),
     )
   } else {
     cetz.canvas(
       {
-        cetz.draw.set-style(stroke: (paint: if theme.get() == "dark" { white } else { black }))
+        cetz.draw.set-style(stroke: (paint: black))
       }
         + body,
       ..args,
@@ -43,20 +39,47 @@
   }
 }
 
-#let diagram(..args) = context {
+#let stroke-with(stroke, paint) = {
+  if type(stroke) == std.stroke {
+  } else if stroke != none{
+    stroke = std.stroke(stroke)
+  } else {
+    stroke = std.stroke()
+  }
+  std.stroke(
+    paint: paint,//if stroke.paint == auto { paint } else { stroke.paint },
+    thickness: stroke.thickness,
+    dash: stroke.dash,
+    cap: stroke.cap,
+    join: stroke.join,
+    miter-limit: stroke.miter-limit,
+  )
+}
+
+#let diagram(recolor: true, ..args) = context {
   // wrapper around fletcher.diagram
   if target() == "html" {
-    (
-      div-frame(
-        {
-          set text(fill: white)
+    div-frame(
+      {
+        set text(fill: white) if recolor
+        let node-stroke = args.at("node-stroke", default: none)
+        let edge-stroke = args.at("edge-stroke", default: none)
+        let d = (
+          node-stroke: if node-stroke == none { white + 0pt } else { stroke-with(node-stroke, white) },
+          edge-stroke: stroke-with(edge-stroke, white),
+        )
+        if recolor {
+          fletcher.diagram(
+            ..args,
+            ..d,
+          )
+        } else {
           fletcher.diagram(
             ..args,
           )
-        },
-        attrs: ("class": "dark frame-block"),
-      )
-        + div-frame(fletcher.diagram(..args), attrs: ("class": "light frame-block"))
+        }
+      },
+      attrs: ("class": "frame-block"),
     )
   } else {
     fletcher.diagram(
@@ -65,24 +88,16 @@
   }
 }
 
-#let polyfill-html(block: true, class: "") = it => context {
+#let polyfill-html(block: true, class: "", fix-color: true) = it => context {
   let frame = if block { div-frame } else { span-frame }
   let class = class + if block { " frame-block" } else { " frame-inline" }
   if target() == "html" {
-    {
-      theme.update("dark")
-      set text(fill: white)
-      frame(attrs: ("class": "dark " + class), it)
-    }
-    {
-      theme.update("light")
-      frame(attrs: ("class": "light " + class), it)
-    }
+    set text(fill: white) if fix-color
+    frame(attrs: ("class": class), it)
   } else {
     it
   }
 }
-
 
 
 #let numbered(body) = {
@@ -110,22 +125,6 @@
       "div",
       attrs: ("class": "declare"),
       html.elem("a", [Dipam's Notebook], attrs: ("href": "../"))
-        + html.elem("input", attrs: (
-          "type": "checkbox",
-          "id": "theme-switch",
-          "class": "theme-switch",
-          "checked": "true",
-          "onclick": ```javascript
-          let theme = document.body.parentElement.getAttribute("data-theme");
-          if (theme === "dark") {
-            document.body.parentElement.setAttribute("data-theme", "light");
-          } else {
-            document.body.parentElement.setAttribute("data-theme", "dark");
-          }
-          localStorage.setItem("dsnb-theme", document.body.parentElement.getAttribute("data-theme"));
-          ```.text,
-        ))
-        + html.elem("label", attrs: ("for": "theme-switch", "class": "theme-switch-label")),
     )
   }
 }
@@ -139,22 +138,11 @@
         html.elem(
           "div",
           html.elem(
-            "a",
-            html.elem("img", attrs: (
-              "src": "../assets/github-mark.svg",
-              "alt": "github",
-              "width": "30",
-              "class": "light",
-            )),
-            attrs: ("href": "https://github.com/dipamsen"),
-          )
-            + html.elem(
               "a",
               html.elem("img", attrs: (
                 "src": "../assets/github-mark-white.svg",
                 "alt": "github",
                 "width": "30",
-                "class": "dark",
               )),
               attrs: ("href": "https://github.com/dipamsen"),
             ),
@@ -187,7 +175,7 @@
 
 #let blog-post(title: "", date: datetime.today(), body) = {
   set enum(tight: false)
-  set text(1.2em, hyphenate: false, region: "uk")
+  set text(1em, hyphenate: false, region: "uk")
   set par(justify: true)
 
   set text(font: "Figtree")
@@ -253,7 +241,17 @@
     }
   }
 
+  // show: zebraw-init
+
   show figure.caption: text.with(0.9em, fill: rgb("#545454"))
+
+  show footnote: it => {
+    if output-format == "html" {
+      
+    } else {
+      it
+    }
+  }
 
   if output-format == "html" {
     html.elem(
@@ -271,25 +269,9 @@
           html.elem(
             "link",
             attrs: (
-              "href": "https://fonts.googleapis.com/css2?family=Azeret+Mono:ital,wght@0,100..900;1,100..900&family=Figtree:ital,wght@0,300..900;1,300..900&family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap",
+              "href": "https://fonts.googleapis.com/css2?family=Azeret+Mono:ital,wght@0,100..900;1,100..900&family=Open+Sans:wght@300..700&family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap",
               "rel": "stylesheet",
             ),
-          )
-          html.elem(
-            "script",
-            ```js
-            // document.addEventListener("DOMContentLoaded", () => {
-            //   const lskey = "dsnb-theme";
-            //   const theme = localStorage.getItem(lskey);
-            //   if (theme) {
-            //     document.body.parentElement.setAttribute("data-theme", theme);
-            //   } else {
-            //     document.body.parentElement.setAttribute("data-theme", "dark");
-            //   }
-            //   const themeSwitch = document.getElementById("theme-switch");
-            //   themeSwitch.checked = document.body.parentElement.getAttribute("data-theme") === "dark";
-            // });
-            ```.text,
           )
         },
       )
@@ -303,6 +285,7 @@
                 "div",
                 [
                   #make-title(title, date)
+                  #show: zebraw-init
                   #body
                 ],
                 attrs: ("class": "content"),
