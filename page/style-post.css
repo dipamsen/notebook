@@ -147,7 +147,7 @@ h3 {
   margin-top: 1.5rem;
 }
 
-p, h4 {
+main p, h4 {
   margin-top: 1.5rem;
 }
 
@@ -166,9 +166,9 @@ a {
 }
 
 footer {
-  background-color: #1e1e1e;
-  padding: 1rem;
+  padding: 1rem 2rem;
   width: 100%;
+  margin: 1rem 0;
 
   & .contain {
     margin: 0 auto;
@@ -179,23 +179,29 @@ footer {
   }
 
   & a {
-    color: #f9f6f9;
+    color: #545454
   }
 
-  & .right {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-  }
-
-  @media screen and (max-width: 600px) {
-    & .contain {
-      flex-direction: column;
-      align-items: flex-start;
-      justify-content: center;
-    }
+  & a:hover {
+    color: #878787;
   }
 }
+
+footer span {
+  display: flex;
+  gap: 1rem;
+  font-family: "Azeret Mono", monospace;
+  font-weight: normal;
+  font-size: 1rem;
+}
+
+
+
+.github-icon {
+  width: 1.2em;
+}
+
+
 
 code,
 pre {

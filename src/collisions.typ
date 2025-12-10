@@ -59,7 +59,7 @@ There are two possible ways in which this can happen:
   })
 })
 
-#align(center, table(
+#figure(table(
   stroke: none,
   inset: 0pt,
   columns: 2,
@@ -231,18 +231,18 @@ only imparts force along the line of impact, the tangential velocities don't cha
   })
 })
 
-#align(center, table(
+#figure(table(
   stroke: none,
   inset: 0pt,
   columns: 3,
   gutter: 2.5em,
-  align(horizon, fig1), fig2, fig3,
+  fig1, fig2, fig3,
 ))
 
 Components of velocity in the #nh direction (along the line of impact) can be resolved by using the formula for
 one-dimensional elastic collision, whereas velocities in the #th direction remain unchanged.
 
-#align(center, table(stroke: none, inset: 0pt, columns: 2, align: horizon, column-gutter: 3em, row-gutter: 1em)[
+#figure(table(stroke: none, inset: 0pt, columns: 2, align: horizon, column-gutter: 3em, row-gutter: 1em)[
   $ v'_(1n) = (m_1-m_2) / (m_1 + m_2)med v_(1n) + (2m_2) / (m_1 + m_2) med v_(2n) $
 ][
   $ v'_(1t) = v_(1t) $
@@ -269,7 +269,7 @@ $v_(1n) = arrow(v_1) dot nh$ and $v_(2n) = arrow(v_2) dot nh$. $ arrow(v'_1) = a
 The unit vector along the line of impact,
 $nh$, is in the direction of the difference of position vectors of bodies 1 and 2. If $arrow(x)$ denotes the position
 vector of the centre of the body, $ nh = (arrow(x_2) - arrow(x_1))/(|arrow(x_2) - arrow(x_1)|) $
-#pagebreak(weak: true)
+
 By substituting all values, we get a vector expression for
 $arrow(v'_1)$. The expression of $arrow(v'_2)$ can be symmetrically obtained. $ #boxed($display(
   arrow(v'_1) = arrow(v_1) + (2 m_2) / (m_1 + m_2) ((arrow(v_2) - arrow(v_1)) dot (arrow(x_2) - arrow(x_1)))/(|arrow(x_2) - arrow(x_1)|^2) (arrow(x_2) - arrow(x_1))
@@ -277,6 +277,4 @@ $arrow(v'_1)$. The expression of $arrow(v'_2)$ can be symmetrically obtained. $ 
 #boxed($display(
   arrow(v'_2) = arrow(v_2) + (2 m_1) / (m_1 + m_2) ((arrow(v_1) - arrow(v_2)) dot (arrow(x_1) - arrow(x_2)))/(|arrow(x_1) - arrow(x_2)|^2) (arrow(x_1) - arrow(x_2))
 )$) $
-#v(3em)
-#align(center, line(length: 50%))
 
