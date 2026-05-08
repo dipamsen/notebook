@@ -177,7 +177,15 @@
   }
 }
 
-#let blog-post(title: "", date: datetime.today(), body) = {
+#let boxed-content(body) = context {
+  if target() == "html" {
+    html.elem("div", body, attrs: ("class": "boxed-content"))
+  } else {
+    panic("boxed-content is only supported in HTML")
+  }
+}
+
+#let blog-post(title: "", date: datetime.today(), description: "", body) = {
   set enum(tight: false)
   set text(1em, hyphenate: false, region: "uk")
   set par(justify: true)
@@ -214,14 +222,16 @@
     }
   }
 
-  // show grid: polyfill-html(class: "grid")
+  show quote.where(block: true): it => context {
+    if target() == "html" {
+      let quote-class = if it.at("attribution", default: none) != none { "quote-with-attribution" } else { "quote" }
+      html.elem("div", it, attrs: ("class": quote-class))
+    } else {
+      it
+    }
+  }
 
-  // show grid
 
-  // show block: polyfill-html(class: "box")
-
-  //show raw.where(block: true): zebraw
-  //
   show table: it => context {
     if target() == "html" {
       let column-gutter = it.fields().at("column-gutter") // list
@@ -264,6 +274,19 @@
         {
           html.elem("meta", attrs: ("charset": "UTF-8"))
           html.elem("meta", attrs: ("name": "viewport", "content": "width=device-width, initial-scale=1"))
+          /*
+          <meta property="og:title" content="Post Title">
+          <meta property="og:description" content="Short description of the blog post">
+          <meta property="og:type" content="article">
+          <meta property="og:url" content="https://example.com/post-url">
+          <meta property="og:image" content="https://example.com/preview-image.png">
+          <meta property="og:site_name" content="Dipam's Notebook">
+           */
+          html.elem("meta", attrs: ("property": "og:title", "content": title))
+          html.elem("meta", attrs: ("property": "og:description", "content": description))
+          html.elem("meta", attrs: ("property": "description", "content": description))
+          html.elem("meta", attrs: ("property": "og:type", "content": "article"))
+          html.elem("meta", attrs: ("property": "og:site_name", "content": "Dipam's Notebook"))
           html.elem("title", title + " | Dipam's Notebook")
           html.elem("link", attrs: ("rel": "stylesheet", "href": "style-post.css"))
           html.elem("link", attrs: ("rel": "preconnect", "href": "https://fonts.googleapis.com"))

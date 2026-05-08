@@ -27,5 +27,12 @@
     "path": "regex",
     "date": "2025-06-30",
     "pdf": true
+  },
+  {
+    "title": "Markov Chains and Dynamic Programming",
+    "description": "Solving some probability problems using Markov chains and dynamic programming.",
+    "path": "markov",
+    "date": "2026-05-08",
+    "pdf": false
   }
 ]
