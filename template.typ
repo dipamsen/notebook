@@ -205,9 +205,9 @@
     ],
   ) if output-format == "pdf"
 
-  show math.equation.where(block: true): polyfill-html(class: "block-math")
+  // show math.equation.where(block: true): polyfill-html(class: "block-math")
 
-  show math.equation.where(block: false): polyfill-html(class: "inline-math", block: false)
+  // show math.equation.where(block: false): polyfill-html(class: "inline-math", block: false)
 
   show align: it => context {
     if target() == "html" {

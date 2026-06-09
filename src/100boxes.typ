@@ -78,6 +78,6 @@ Now, this result is obviously not specific for $N=10$, it is true for any $N$, a
 Now since $A_1, A_2, ..., A_50$ is mutually exclusive, we can write:
 
 $
-  P("Success") = frac("Favourable", "Total") &= P(A_1 union A_2 union A_3 union A_4 union ... union A_50) /  1\ & =50 times 1/100  = #boxed($ 1/2 $)
+  P("Success") = frac("Favourable", "Total") &= P(A_1 union A_2 union A_3 union A_4 union ... union A_50) /  1\ & =50 times 1/100  = 1/2
 $
 

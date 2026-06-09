@@ -80,6 +80,10 @@ main {
       }
     }
 
+    & .frame-inline {
+      display: inline-block;
+    }
+
     @media screen and (max-width: 600px) {
       figure {
         /* display: block; */
